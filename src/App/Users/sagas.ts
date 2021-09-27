@@ -1,19 +1,18 @@
-import api from 'utils/api';
+import { MakeResponse } from '@modusbox/redux-utils/lib/api';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
-import { User } from './types';
+import api from 'utils/api';
 import { actions } from './slice';
+import { FetchUsersResponse, User } from './types';
 
 function* fetchUsers() {
   try {
-    // @ts-ignore
-    const response = yield call(api.users.read);
+    const response = (yield call(api.users.read)) as MakeResponse<FetchUsersResponse>;
 
     if (response.status !== 200) {
-      throw new Error(response.data);
+      throw new Error(JSON.stringify(response));
     }
 
-    // project result into our Transfer type
-    const res: User[] = response.data;
+    const res: User[] = response.data.users;
 
     yield put(actions.setUsers(res));
   } catch (e) {

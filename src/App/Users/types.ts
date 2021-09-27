@@ -1,16 +1,23 @@
 export interface User {
   id: string;
-  name: string;
-  assignedRoles: string[];
-  assignableRoles: string[];
-  assignedParticipants: string[];
-  assignableParticipants: string[];
+  name: Name | undefined;
+  emails: string[] | undefined;
+  username: string | undefined;
+}
+
+export interface Name {
+  givenName: string | undefined;
+  familyName: string | undefined;
 }
 
 export interface UsersState {
   users: User[];
   usersError: string | null;
   isUsersRequestPending: boolean;
+}
+
+export interface FetchUsersResponse {
+  users: User[];
 }
 
 export interface ExtensionListItem {

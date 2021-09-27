@@ -75,3 +75,28 @@ For more details read [configuring the tools](./docs/configuring-the-tools.md).
 - [Configuring the tools](./docs/configuring-the-tools.md)
 - [Environment variables](./docs/environment-variables.md)
 - [External API](./docs/external-api.md)
+
+## Local Development
+
+### Run Services
+
+#### Locally, with Docker
+
+1.  `reporting-hub-bop-role-ui-internal` uses [role-assignment-service](https://github.com/mojaloop/role-assignment-service)
+    for local development.
+    ```sh
+    git clone git@github.com:mojaloop/role-assignment-service.git
+    cd role-assignment-service
+    docker-compose up
+    ```
+
+2.  localhost:3008 hosts the role-assignment-service
+    localhost:9443 hosts the wso2is server
+    localhost:4466 hosts keto's read port
+    localhost:4467 hosts keto's write port
+    localhost:3001 hosts the central-ledger service
+    The microfrontend points towards the role-assignment-service on
+    localhost:3008 using a variable set in `.env`
+
+3.  Start up the `reporting-hub-bop-role-ui-internal` microfrontend using
+    `yarn start`.

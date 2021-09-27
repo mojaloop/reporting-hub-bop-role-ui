@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import './UserProfile.scss';
 import UserProfileRolesUpdate from './components/UserProfileRolesUpdate';
 import UserProfileParticipantsUpdate from './components/UserProfileParticipantsUpdate';
-import userProfileConnector, { UserProfileProps } from './connectors';
+import { userProfileConnector, UserProfileProps } from './connectors';
 
 const roleColumns = [
   {
@@ -47,8 +47,9 @@ function UserProfile({
   onClickRemoveParticipantButton,
 }: UserProfileProps) {
   const { pathname } = useLocation();
+  const id = pathname.split('/').pop()!;
   // @ts-ignore
-  React.useEffect(() => onPageMount(pathname.split('/').pop()!), []);
+  React.useEffect(() => onPageMount(id), []);
 
   let content = null;
   if (userProfileError) {
@@ -70,7 +71,7 @@ function UserProfile({
             size="small"
             kind="primary"
             label="Remove Role"
-            onClick={() => onClickRemoveRoleButton(role)}
+            onClick={() => onClickRemoveRoleButton({ id, roleId: role })}
           />
         ),
       });
@@ -85,7 +86,7 @@ function UserProfile({
             size="small"
             kind="primary"
             label="Remove Company"
-            onClick={() => onClickRemoveParticipantButton(participant)}
+            onClick={() => onClickRemoveParticipantButton({ id, participantId: participant })}
           />
         ),
       });
@@ -93,7 +94,7 @@ function UserProfile({
 
     content = (
       <div>
-        <Heading size="3">{userProfile!.name}</Heading>
+        <Heading size="3">{userProfile!.username}</Heading>
         <div className="userProfile__roles">
           <Heading size="4">Roles</Heading>
           <Button

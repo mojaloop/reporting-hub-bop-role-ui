@@ -14,7 +14,7 @@
     "prettier": "prettier --write 'src/**/*.{ts,tsx,js,scss,css,json}' 'webpack.*.js'",
     "version": "node -pe \"require('./package.json').version\"",
     "name": "node -pe \"require('./package.json').name\"",
-    "test": "jest --env=jsdom"
+    "test": "jest --env=jsdom --testMatch '**/*.test.tsx'"
   },
   "author": "",
   "license": "ISC",

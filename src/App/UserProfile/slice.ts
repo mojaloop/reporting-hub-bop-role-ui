@@ -1,5 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserProfile, UserProfileState } from './types';
+import {
+  UserProfile,
+  UserProfileState,
+  RoleDeletionItem,
+  ParticipantDeletionItem,
+  RolesDelta,
+  ParticipantsDelta,
+} from './types';
 
 export const initialState: UserProfileState = {
   userProfile: null,
@@ -61,25 +68,53 @@ const slice = createSlice({
       };
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    requestUserProfileRoleRemove(state: UserProfileState, action: PayloadAction<string>) {
+    requestUserProfileRoleRemove(state: UserProfileState, action: PayloadAction<RoleDeletionItem>) {
+      return {
+        ...state,
+      };
+    },
+    requestUserProfileParticipantRemove(
+      state: UserProfileState,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      action: PayloadAction<ParticipantDeletionItem>,
+    ) {
       return {
         ...state,
       };
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    requestUserProfileParticipantRemove(state: UserProfileState, action: PayloadAction<string>) {
+    requestUserProfileRolesUpdate(state: UserProfileState, action: PayloadAction<RolesDelta>) {
       return {
         ...state,
+        showChangeRolesModal: false,
       };
     },
-    requestUserProfileRolesUpdate(state: UserProfileState) {
+    setUserProfileRoles(state: UserProfileState, action: PayloadAction<string[]>) {
       return {
         ...state,
+        userProfile: {
+          ...state.userProfile!,
+          assignedRoles: action.payload,
+        },
       };
     },
-    requestUserProfileParticipantsUpdate(state: UserProfileState) {
+    requestUserProfileParticipantsUpdate(
+      state: UserProfileState,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      action: PayloadAction<ParticipantsDelta>,
+    ) {
       return {
         ...state,
+        showChangeParticipantsModal: false,
+      };
+    },
+    setUserProfileParticipants(state: UserProfileState, action: PayloadAction<string[]>) {
+      return {
+        ...state,
+        userProfile: {
+          ...state.userProfile!,
+          assignedParticipants: action.payload,
+        },
       };
     },
   },

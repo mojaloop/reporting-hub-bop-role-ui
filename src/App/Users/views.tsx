@@ -3,30 +3,29 @@ import { MessageBox, Spinner, Heading, Table } from 'components';
 import { useHistory } from 'react-router-dom';
 import { useBasePath } from 'App/hooks';
 import './Users.scss';
-import { User } from './types';
+import { Name, User } from './types';
 import usersConnector, { UsersProps } from './connectors';
 
 const usersColumns = [
   {
-    label: 'ID',
-    key: 'id',
+    label: 'Username',
+    key: 'username',
   },
   {
     label: 'Name',
     key: 'name',
-  },
-  {
-    label: 'Roles',
-    key: 'assignedRoles',
-    fn: (rawValue: string[]) => {
-      return rawValue.join(',');
+    fn: (rawValue: Name) => {
+      return `${rawValue.givenName || ''} ${rawValue.familyName || ''}`;
     },
   },
   {
-    label: 'Participant Companies',
-    key: 'assignedParticipants',
+    label: 'Emails',
+    key: 'emails',
     fn: (rawValue: string[]) => {
-      return rawValue.join(',');
+      if (rawValue) {
+        return rawValue.join(',');
+      }
+      return '-';
     },
   },
 ];

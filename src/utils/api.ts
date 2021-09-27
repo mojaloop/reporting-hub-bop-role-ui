@@ -1,31 +1,50 @@
 import { State } from 'store';
 import buildApi, { buildEndpointBuilder, EndpointConfig } from '@modusbox/redux-utils/lib/api';
-import usersMock from 'App/Users/_mockData';
-import userProfileMock from 'App/UserProfile/_mockData';
 
 const services = {
-  reportingApi: {
-    baseUrl: '',
-    mock: () => true,
+  rolesApi: {
+    baseUrl: '/api',
+    mock: () => false,
   },
 };
 
 const builder = buildEndpointBuilder<State>();
 
 const users: EndpointConfig = {
-  service: services.reportingApi,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  url: (_: State) => `/users`,
-  mock: usersMock,
+  service: services.rolesApi,
+  url: () => `/users`,
 };
 
-const userProfile: EndpointConfig = {
-  service: services.reportingApi,
-  url: (_: State, pathname: string) => `/userProfile${pathname}`,
-  mock: userProfileMock,
+const usersId: EndpointConfig = {
+  service: services.rolesApi,
+  url: (_: State, id: string) => `/users/${id}`,
+};
+
+const roles: EndpointConfig = {
+  service: services.rolesApi,
+  url: () => `/roles`,
+};
+
+const participants: EndpointConfig = {
+  service: services.rolesApi,
+  url: () => `/participants`,
+};
+
+const userRoles: EndpointConfig = {
+  service: services.rolesApi,
+  url: (_: State, { id }) => `/users/${id}/roles`,
+};
+
+const userParticipants: EndpointConfig = {
+  service: services.rolesApi,
+  url: (_: State, { id }) => `/users/${id}/participants`,
 };
 
 export default buildApi({
   users: builder<{}>(users),
-  userProfile: builder<{}>(userProfile),
+  usersId: builder<{}>(usersId),
+  roles: builder<{}>(roles),
+  participants: builder<{}>(participants),
+  userRoles: builder<{}>(userRoles),
+  userParticipants: builder<{}>(userParticipants),
 });

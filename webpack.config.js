@@ -9,11 +9,12 @@ require('dotenv').config({
   path: './.env',
 });
 
-const { DEV_PORT, VERCEL_URL, PUBLIC_PATH } = process.env;
+const { DEV_PORT, VERCEL_URL, PUBLIC_PATH, ROLE_API_URL } = process.env;
 
 const config = {
   DEV_PORT,
   PUBLIC_PATH: VERCEL_URL ? `https://${VERCEL_URL}/` : PUBLIC_PATH,
+  ROLE_API_URL,
 };
 
 const { ModuleFederationPlugin } = webpack.container;
@@ -47,6 +48,14 @@ module.exports = {
     port: config.DEV_PORT,
     host: '0.0.0.0',
     publicPath: '/',
+    proxy: {
+      '/api': {
+        target: config.ROLE_API_URL,
+        pathRewrite: { '^/api': '' },
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
