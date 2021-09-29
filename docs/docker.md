@@ -12,7 +12,7 @@ The app can be run in a docker container.
 The image can be easily built with `docker build` as follows:
 
 ```bash
-docker build -t reporting-hub-bop-role-ui-internal:local .
+docker build -t reporting-hub-bop-role-ui:local .
 ```
 
 ### Running a local image
@@ -20,7 +20,7 @@ docker build -t reporting-hub-bop-role-ui-internal:local .
 You can run the app container as follows:
 
 ```bash
-docker run -p 8081:8081 reporting-hub-bop-role-ui-internal:local
+docker run -p 8081:8081 reporting-hub-bop-role-ui:local
 ```
 
 ### Build time configuration
@@ -39,7 +39,7 @@ docker build \
   --build-arg REACT_APP_VERSION=`npm run version --silent` \
   --build-arg REACT_APP_COMMIT=`git rev-parse HEAD`\
   --build-arg PUBLIC_PATH=https://localhost:8081/\
-  -t reporting-hub-bop-role-ui-internal \
+  -t reporting-hub-bop-role-ui \
   .
 ```
 
@@ -54,5 +54,5 @@ docker run --rm \
   -p 8081:8080 \
   -e API_BASE_URL="https://your-api-base-url" \
   -e MOCK_API="true" \
-   reporting-hub-bop-role-ui-internal
+   reporting-hub-bop-role-ui
 ```

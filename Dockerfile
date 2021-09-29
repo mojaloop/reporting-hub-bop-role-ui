@@ -1,6 +1,6 @@
 # First part, build the app
-FROM node:16-alpine as reporting-hub-bop-role-ui-internal-builder
-LABEL stage=reporting-hub-bop-role-ui-internal-builder
+FROM node:16-alpine as reporting-hub-bop-role-ui-builder
+LABEL stage=reporting-hub-bop-role-ui-builder
 
 COPY package.json .
 COPY yarn.lock .
