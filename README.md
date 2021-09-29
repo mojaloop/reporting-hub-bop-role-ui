@@ -1,4 +1,4 @@
-![Build Status](https://github.com/modusintegration/reporting-hub-bop-role-ui-internal/actions/workflows/node.js.yml/badge.svg)
+![Build Status](https://github.com/modusintegration/reporting-hub-bop-role-ui/actions/workflows/node.js.yml/badge.svg)
 
 # Reporting Hub BizOps Role Assignment Microfrontend
 
@@ -82,7 +82,7 @@ For more details read [configuring the tools](./docs/configuring-the-tools.md).
 
 #### Locally, with Docker
 
-1.  `reporting-hub-bop-role-ui-internal` uses [role-assignment-service](https://github.com/mojaloop/role-assignment-service)
+1.  `reporting-hub-bop-role-ui` uses [role-assignment-service](https://github.com/mojaloop/role-assignment-service)
     for local development.
     ```sh
     git clone git@github.com:mojaloop/role-assignment-service.git
@@ -98,5 +98,5 @@ For more details read [configuring the tools](./docs/configuring-the-tools.md).
     The microfrontend points towards the role-assignment-service on
     localhost:3008 using a variable set in `.env`
 
-3.  Start up the `reporting-hub-bop-role-ui-internal` microfrontend using
+3.  Start up the `reporting-hub-bop-role-ui` microfrontend using
     `yarn start`.

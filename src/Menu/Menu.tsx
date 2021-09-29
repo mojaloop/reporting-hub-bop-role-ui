@@ -11,7 +11,7 @@ interface ExportMenuProps {
 function MenuItems({ path }: ExportMenuProps) {
   return (
     <>
-      <Menu.Item path={`${path}`} label="Home" />
+      <Menu.Item path={`${path}`} label="Users" />
     </>
   );
 }

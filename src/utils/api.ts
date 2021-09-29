@@ -3,7 +3,7 @@ import buildApi, { buildEndpointBuilder, EndpointConfig } from '@modusbox/redux-
 
 const services = {
   rolesApi: {
-    baseUrl: '/api',
+    baseUrl: '/role-api',
     mock: () => false,
   },
 };
