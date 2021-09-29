@@ -49,9 +49,9 @@ module.exports = {
     host: '0.0.0.0',
     publicPath: '/',
     proxy: {
-      '/api': {
+      '/role-api': {
         target: config.ROLE_API_URL,
-        pathRewrite: { '^/api': '' },
+        pathRewrite: { '^/role-api': '' },
         changeOrigin: true,
         secure: false,
       },
