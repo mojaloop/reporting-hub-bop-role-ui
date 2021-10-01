@@ -51,3 +51,6 @@ EXPOSE 8080
 ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["caddy", "run", "--watch"]
+# TODO: Need to add 8080 to image-scan whitelist
+#       Need to switch user away from root
+#       Investigate Feed data unavailable, cannot perform CVE scan for distro: alpine:3.14.2
