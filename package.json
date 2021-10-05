@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "docker:build": "docker-compose build --build-arg REACT_APP_VERSION=`npm run version --silent` --build-arg REACT_APP_COMMIT=`git rev-parse HEAD` --build-arg REACT_APP_NAME=`npm run name --silent`",
     "start": "webpack-dev-server",
     "build": "webpack --mode production",
     "serve": "serve dist -s -p 3002",
