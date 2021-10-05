@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack --mode production",
-    "serve": "serve dist -s -p 3002",
+    "serve": "serve dist -s -p 3012",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
     "lint-staged": "lint-staged",
     "lint-style": "stylelint --syntax=scss 'src/**/*.scss'",

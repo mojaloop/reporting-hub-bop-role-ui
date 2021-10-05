@@ -3,7 +3,10 @@ import buildApi, { buildEndpointBuilder, EndpointConfig } from '@modusbox/redux-
 
 const services = {
   rolesApi: {
-    baseUrl: '/role-api',
+    baseUrl:
+      process.env.NODE_ENV === 'production' && process.env.ROLE_API_URL
+        ? process.env.ROLE_API_URL!
+        : '/role-api/',
     mock: () => false,
   },
 };
