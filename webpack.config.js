@@ -48,14 +48,6 @@ module.exports = {
     port: config.DEV_PORT,
     host: '0.0.0.0',
     publicPath: '/',
-    proxy: {
-      '/role-api': {
-        target: config.ROLE_API_URL,
-        pathRewrite: { '^/role-api': '' },
-        changeOrigin: true,
-        secure: false,
-      },
-    },
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
