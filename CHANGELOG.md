@@ -1,6 +1,10 @@
-# Changelog
+# Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+## [1.2.0](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.1.1...v1.2.0) (2021-10-07)
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### Features
+
+* add environment runtime config ([#7](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/7)) ([ef7a4da](https://github.com/mojaloop/reporting-hub-bop-role-ui/commit/ef7a4da1bc4fc81e170c8ea99289093bc29b0220))
 
 ### [1.1.1](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.1.0...v1.1.1) (2021-10-06)
 
