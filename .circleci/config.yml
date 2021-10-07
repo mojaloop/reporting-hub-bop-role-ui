@@ -142,7 +142,8 @@ jobs:
           name: Build Docker local image
           command: |
             echo "Building Docker image: local"
-            docker build -t $DOCKER_ORG/$CIRCLE_PROJECT_REPONAME:local .
+            docker build -t $DOCKER_ORG/$CIRCLE_PROJECT_REPONAME:local . --build-arg REACT_APP_VERSION=`npm run version --silent` --build-arg REACT_APP_COMMIT=`git rev-parse HEAD` --build-arg PUBLIC_PATH=https://localhost:8080/ --build-arg REACT_APP_API_BASE_URL=http://localhost:3008/ --build-arg REACT_APP_MOCK_API=false
+
       - run:
           name: Save docker image to workspace
           command: docker save -o /tmp/docker-image.tar $DOCKER_ORG/$CIRCLE_PROJECT_REPONAME:local

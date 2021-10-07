@@ -14,8 +14,9 @@ services:
         - mojaloop/reporting-hub-bop-role-ui
       args:
         - PUBLIC_PATH=https://localhost:8081/
-        - REACT_APP_API_BASE_URL=http://localhost:3008/
-        - REACT_APP_MOCK_API=false
+    environment:
+      - REACT_APP_API_BASE_URL=http://localhost:3008/
+      - REACT_APP_MOCK_API=false
     ports:
       - "8081:8080"
     networks:
