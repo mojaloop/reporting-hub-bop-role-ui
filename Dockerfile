@@ -23,12 +23,6 @@ ENV REACT_APP_COMMIT=$REACT_APP_COMMIT
 ARG PUBLIC_PATH
 ENV PUBLIC_PATH=$PUBLIC_PATH
 
-ARG REACT_APP_API_BASE_URL
-ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL
-
-ARG REACT_APP_MOCK_API
-ENV REACT_APP_MOCK_API=$REACT_APP_MOCK_API
-
 RUN yarn build
 
 # Second part, create a config at boostrap via entrypoint and and serve it
@@ -40,17 +34,17 @@ RUN apk add --no-cache jq
 COPY --from=0 dist/ .
 COPY docker/Caddyfile /srv/Caddyfile
 COPY docker/entrypoint.sh /entrypoint.sh
-COPY docker/createJSONConfig.sh /createJSONConfig.sh
+COPY docker/loadRuntimeConfig.sh /loadRuntimeConfig.sh
 
 RUN chmod +x /entrypoint.sh
-RUN chmod +x /createJSONConfig.sh
+RUN chmod +x /loadRuntimeConfig.sh
 
 # Provide environment variables for setting endpoints dynamically
-ARG API_BASE_URL
-ENV API_BASE_URL=$API_BASE_URL
+ARG REACT_APP_API_BASE_URL
+ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL
 
-ARG MOCK_API
-ENV MOCK_API=$MOCK_API
+ARG REACT_APP_MOCK_API
+ENV REACT_APP_MOCK_API=$REACT_APP_MOCK_API
 
 EXPOSE 8080
 

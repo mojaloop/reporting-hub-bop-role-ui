@@ -4,6 +4,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const webpack = require('webpack');
 const DotenvPlugin = require('dotenv-webpack');
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 require('dotenv').config({
   path: './.env',
@@ -110,6 +111,9 @@ module.exports = {
     ],
   },
   plugins: [
+    new CopyPlugin({
+      patterns: [{ from: 'public/runtime-env.js', to: 'runtime-env.js' }],
+    }),
     new EslintWebpackPlugin({
       extensions: ['ts', 'js', 'tsx', 'jsx'],
       exclude: [`/node_modules/`],
