@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+## [1.3.0](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.2.0...v1.3.0) (2021-10-08)
+
+
+### Features
+
+* add runtime publicpath and switch to nginx ([#8](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/8)) ([2d19a17](https://github.com/mojaloop/reporting-hub-bop-role-ui/commit/2d19a176cd4275ac6b88486176ed081619c5ae75))
+
 ## [1.2.0](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.1.1...v1.2.0) (2021-10-07)
 
 
