@@ -1,19 +1,18 @@
 FROM node:lts-alpine as builder
-
-WORKDIR /opt/reporting-hub-bop-shell
-ENV PATH /opt/reporting-hub-bop-shell/node_modules/.bin:$PATH
+WORKDIR /opt/reporting-hub-bop-role-ui
+ENV PATH /opt/reporting-hub-bop-role-ui/node_modules/.bin:$PATH
 
 RUN apk add --no-cache -t build-dependencies git make gcc g++ python libtool autoconf automake \
     && cd $(npm root -g)/npm \
     && npm config set unsafe-perm true \
     && npm install -g node-gyp
 
-COPY package.json /opt/reporting-hub-bop-shell/
-COPY yarn.lock /opt/reporting-hub-bop-shell/
+COPY package.json /opt/reporting-hub-bop-role-ui/
+COPY yarn.lock /opt/reporting-hub-bop-role-ui/
 
 RUN yarn --frozen-lockfile
 
-COPY ./ /opt/reporting-hub-bop-shell/
+COPY ./ /opt/reporting-hub-bop-role-ui/
 
 # Adds the package version and commit hash
 ARG REACT_APP_NAME
@@ -25,17 +24,13 @@ ENV REACT_APP_VERSION=$REACT_APP_VERSION
 ARG REACT_APP_COMMIT
 ENV REACT_APP_COMMIT=$REACT_APP_COMMIT
 
-# Public Path - Placeholder that is overwritten at runtime
-ARG PUBLIC_PATH
-ENV PUBLIC_PATH=__PUBLIC_PATH__
-
 RUN yarn build
 
 # Second part, create a config at boostrap via entrypoint and and serve it
 FROM nginx:1.16.0-alpine
 WORKDIR /usr/share/nginx/html
 
-COPY --from=builder /opt/reporting-hub-bop-shell/dist/ /usr/share/nginx/html
+COPY --from=builder /opt/reporting-hub-bop-role-ui/dist/ /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf /etc/nginx/nginx.conf
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/start.sh /usr/share/nginx/start.sh
