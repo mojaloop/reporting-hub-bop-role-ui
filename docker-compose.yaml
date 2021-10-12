@@ -13,7 +13,6 @@ services:
       cache_from:
         - mojaloop/reporting-hub-bop-role-ui
     environment:
-      - PUBLIC_PATH=http://localhost:8081/
       - REACT_APP_API_BASE_URL=http://localhost:3008/
       - REACT_APP_MOCK_API=false
     ports:
