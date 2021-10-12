@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+### [1.3.1](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.3.0...v1.3.1) (2021-10-12)
+
+
+### Maintenance
+
+* **#2514:** change dockerfile for productionization ([#9](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/9)) ([0d1422b](https://github.com/mojaloop/reporting-hub-bop-role-ui/commit/0d1422bdb55c115722eeea3242a3e2e91f2d7c24)), closes [#2514](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/2514)
+
 ## [1.3.0](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.2.0...v1.3.0) (2021-10-08)
 
 
