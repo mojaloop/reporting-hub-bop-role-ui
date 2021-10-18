@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+### [1.3.2](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.3.1...v1.3.2) (2021-10-18)
+
+
+### Maintenance
+
+* config docker to run as non root ([#10](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/10)) ([ab5641c](https://github.com/mojaloop/reporting-hub-bop-role-ui/commit/ab5641c69d661e821913f0529a2d72607baedca3))
+
 ### [1.3.1](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.3.0...v1.3.1) (2021-10-12)
 
 
