@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+## [1.4.0](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.3.2...v1.4.0) (2021-10-21)
+
+
+### Features
+
+* add cookie passing flag for axios api calls for auth ([#12](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/12)) ([238eac4](https://github.com/mojaloop/reporting-hub-bop-role-ui/commit/238eac4858b10c9f6178925a2f6d3ab20f80e2eb))
+
 ### [1.3.2](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.3.1...v1.3.2) (2021-10-18)
 
 
