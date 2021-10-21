@@ -1268,10 +1268,10 @@
     date-fns "^2.21.3"
     lodash "^4.17.21"
 
-"@modusbox/redux-utils@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@modusbox/redux-utils/-/redux-utils-0.0.9.tgz#e0e09aa428d2b50825939ca8924ff9210f753ac6"
-  integrity sha512-a3evM9BVYYBILpPZ5iwYzf6NdIGvcL6I4x3IA7BBP3hGBK9TZv4VIcPAHi+/BlHiKHnSMJUIUTwURe0wBxLGAg==
+"@modusbox/redux-utils@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@modusbox/redux-utils/-/redux-utils-0.0.11.tgz#a0504a8075ae68b724aa221536c782214140a55a"
+  integrity sha512-8jYWavoYiXl3dpQlDgixQQRmTZphH/sWZsjZRXVH2LfgJfR1kJVuQZv1HiZ7XwrzEknH3ZqXIWxQk6+rMvE83w==
   dependencies:
     "@modusbox/ts-utils" "^0.0.3"
     axios "^0.21.1"
