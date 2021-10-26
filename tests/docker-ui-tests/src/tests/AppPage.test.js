@@ -1,9 +1,9 @@
 import { Selector } from 'testcafe';
-import config from '../../config';
 import UsersPage from '../page-objects/pages/UsersPage';
+import data from '../data/user-data'
 
 // eslint-disable-next-line no-undef
-fixture('App Page').page(`${config.PUBLIC_PATH}`);
+fixture('App Page').page(`${data.urls.PUBLIC_PATH}`);
 
 test('App/User list Page loads successfully', async (t) => {
   const appContainer = Selector('.user-iam-app');
