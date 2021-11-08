@@ -47,6 +47,15 @@ module.exports = {
     port: config.DEV_PORT,
     host: '0.0.0.0',
     publicPath: '/',
+    proxy: {
+      // For local testing update `target` to point to your
+      // locally hosted or port-forwarded `role-assignment-service` service
+      '/role-assignment': {
+        target: 'http://localhost:port',
+        pathRewrite: { '^/role-assignment': '' },
+        secure: false,
+      },
+    },
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
