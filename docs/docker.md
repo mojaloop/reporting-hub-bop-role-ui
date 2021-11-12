@@ -38,7 +38,6 @@ docker build \
   --build-arg REACT_APP_NAME=`npm run name --silent` \
   --build-arg REACT_APP_VERSION=`npm run version --silent` \
   --build-arg REACT_APP_COMMIT=`git rev-parse HEAD`\
-  --build-arg PUBLIC_PATH=https://localhost:8081/\
   -t reporting-hub-bop-role-ui \
   .
 ```
@@ -51,7 +50,7 @@ The `config.json` is produced at runtime, it uses environment variables passed t
 
 ```bash
 docker run --rm \
-  -p 8081:8080 \
+  -p 8081:8081 \
   -e API_BASE_URL="https://your-api-base-url" \
   -e MOCK_API="true" \
    reporting-hub-bop-role-ui

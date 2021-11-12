@@ -2,7 +2,7 @@
 
 This microfrontend setup is configured to have this project acting as the remote.
 
-It is responsible to export the children modules/app which will be loaded at runtime and will be provided with some context e.g. auth, routing. 
+It is responsible to export the children modules/app which will be loaded at runtime and will be provided with some context e.g. auth, routing.
 
 `microfrontend-shell-boilerplate` is a default remote (child) boilerplate meant to be consumed by a host such as [microfrontend-shell-boilerplate](https://github.com/modusintegration/microfrontend-shell-boilerplate).
 
@@ -23,7 +23,7 @@ It's important to note the remote has to use a unique name in order to work and 
 
 The suggested practice is use such name as:
 - Git repository
-- Webpack Module Federation [configuration](#webpack-module-federation) 
+- Webpack Module Federation [configuration](#webpack-module-federation)
 - Module (package.json) name
 - CSS wrapper name
 
@@ -100,15 +100,6 @@ In the project root directory you can find the `webpack.config.js` configuration
 
 Code splitting is automatically enabled when using the _ModuleFederationPlugin_.
 
-#### Public Path
-
-In order to work, the microfrontend remote has to specity the correct `output.publicPath`.
-
-The `publicPath` represents the URL where the host is expected to be accessed.
-
-To simplify the configuration, this is set using the `PUBLIC_PATH` environemnt variable.
-
-
 #### Module Federation Plugin
 
 At the `webpack.config.js` plugins section, you can find the _ModuleFederationPlugin_.
@@ -138,7 +129,7 @@ plugins: [
 
 In the `expose` configuration, you need to export all the components you expect are going to be use.
 
-**Note - export only the modules** 
+**Note - export only the modules**
 
 Make sure you do not export the `bootstrap.tsx` as that is only used locally. When your modules are imported by a host, they do not need to include all the traditional context setup specified in `bootstrap.tsx` since the host will be providing that.
 

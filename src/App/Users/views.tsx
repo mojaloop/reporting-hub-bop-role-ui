@@ -15,7 +15,7 @@ const usersColumns = [
     label: 'Name',
     key: 'name',
     fn: (rawValue: Name) => {
-      return `${rawValue.givenName || ''} ${rawValue.familyName || ''}`;
+      return `${rawValue ? rawValue.givenName : ''} ${rawValue ? rawValue.familyName : ''}`;
     },
   },
   {
