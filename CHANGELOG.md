@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+### [1.4.1](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.4.0...v1.4.1) (2021-11-12)
+
+
+### Bug Fixes
+
+* fix menus, address undefined bug, perform housekeeping ([#14](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/14)) ([009fbd4](https://github.com/mojaloop/reporting-hub-bop-role-ui/commit/009fbd458922ef9d61f70e63a44e28f952e377bd))
+
 ## [1.4.0](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.3.2...v1.4.0) (2021-10-21)
 
 
