@@ -10,7 +10,6 @@ The application is driven by some environment variables used at build and runtim
 | `REACT_APP_NAME` | name extracted from package.json` | - |
 | `REACT_APP_VERSION` | version extracted from package.json` | - |
 | `REACT_APP_COMMIT` | commit extracted from git history | - |
-| `PUBLIC_PATH` | public url where the app is accessible | http://localhost:3001/ |
 
 ### Used Locally / Static Files CDN
 
@@ -30,8 +29,3 @@ The application is driven by some environment variables used at build and runtim
 #### Note About Remote URLs Variables
 
 This project is using the `REMOTE_1_URL` to dinamically load a remote. You can add as many remotes as you want or you can decide to use static know localtions without relying on environment variables for the purpose.
-
-#### Note About The Public Path
-
-When working with several host/remote applications it is a requirement that
-`PUBLIC_PATH` are updated to avoid port collision.
