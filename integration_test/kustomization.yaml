@@ -1,0 +1,3 @@
+resources:
+- manifests/reporting-hub-bop-role-ui
+- manifests/backend

@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  name: reporting-hub-bop-role-ui
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /()(.*)
+        backend:
+          serviceName: reporting-hub-bop-role-ui
+          servicePort: http
+      - path: /role-assignment(/|$)(.*)
+        backend:
+          serviceName: bof-role-assignment-service
+          servicePort: 3008

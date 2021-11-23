@@ -58,6 +58,7 @@ function ChangeParticipantsModal({
 
   return (
     <Modal
+      className="userProfile__company-update-modal"
       title="Select Companies"
       onClose={onClickParticipantModalClose}
       onSubmit={() => onClickUpdateParticipants(diff)}
