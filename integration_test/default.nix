@@ -47,6 +47,7 @@ in
   nixpkgs.kustomize
   nixpkgs.kubectl
   nixpkgs.nodejs-16_x
+  nixpkgs.minikube
   k3d
   skaffold
 ]

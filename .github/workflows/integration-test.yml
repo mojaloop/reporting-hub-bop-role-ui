@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies in environment
       run: nix-env -if integration_test/default.nix
     - name: Validate integration test manifest
-      run: kustomize build integration_test | kubeconform -strict -kubernetes-version 1.17.9
+      run: kustomize build integration_test | kubeconform -strict -kubernetes-version 1.21.5
 
   integration_test:
     timeout-minutes: 45
@@ -35,22 +35,7 @@ jobs:
       run: sudo snap install helm --classic
 
     - name: Start cluster
-      run: |-
-        # - --k3s-server-arg args according to
-        #   https://k3d.io/faq/faq/#solved-nodes-fail-to-start-or-get-stuck-in-notready-state-with-log-nf_conntrack_max-permission-denied
-        # - We deploy our own for increased portability across k8s distributions
-        k3d cluster create \
-          --no-lb \
-          --no-rollback \
-          --k3s-server-arg "--kube-proxy-arg=conntrack-max-per-core=0" \
-          --k3s-agent-arg "--kube-proxy-arg=conntrack-max-per-core=0" \
-          --k3s-server-arg "--disable=traefik" \
-          --k3s-server-arg "--disable=metrics-server" \
-          --k3s-server-arg "--disable-cloud-controller" \
-          --kubeconfig-update-default \
-          --kubeconfig-switch-context \
-          --image=rancher/k3s:v1.21.6+k3s1 \
-          int-test
+      run: minikube start --kubernetes-version=v1.21.5
 
     - name: Install Mojaloop Charts
       run: helm repo add mojaloop-charts http://docs.mojaloop.io/charts/repo
