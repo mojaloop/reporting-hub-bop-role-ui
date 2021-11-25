@@ -6,7 +6,6 @@ resources:
 - github.com/mojaloop/wso2is-populate/integration_test/manifests/wso2is-populate?ref=v2.0.4
 - ing.yaml
 
-# TODO: We don't need ml-api-adapter, settlements, ledger handlers, etc
 configMapGenerator:
 - name: oauth-app-credentials
   literals: &oauth_creds

@@ -8,7 +8,7 @@ fixture `User List Feature`
   .beforeEach(async (t) => {
     await waitForReact();
     await t
-      .click(SideMenu.usersButton).wait(1000);
+      .click(SideMenu.usersButton).wait(2000);
   });
 
 test.meta({
