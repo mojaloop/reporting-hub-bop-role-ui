@@ -67,11 +67,8 @@ jobs:
     - name: Access Pod shell
       run: kubectl exec --namespace default -ti $(kubectl get pod -l app.kubernetes.io/name=keto -o jsonpath="{.items[0].metadata.name}") -- sh
 
-    - name: Migrate
-      run: keto migrate up -y --all-namespaces --config /etc/config/keto.yaml
-
-    - name: Exit Pod shell
-      run: exit
+    - name: Migrate Keto
+      run: kubectl exec --namespace default $(kubectl get pod -l app.kubernetes.io/name=keto -o jsonpath="{.items[0].metadata.name}") -- sh -c "keto migrate up -y --all-namespaces --config /etc/config/keto.yaml"
 
     - name: Port-forward the portal frontend ingress
       run: kubectl port-forward -n ingress-nginx --address 0.0.0.0 svc/ingress-nginx-controller 3000:80 &
