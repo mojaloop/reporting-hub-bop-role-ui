@@ -64,11 +64,8 @@ jobs:
       # investigating this was not a priority.
       run: timeout 900 kubectl wait --for=condition=Ready pod --all --timeout=900s
 
-    - name: Get Keto Pod
-      run: POD=$(kubectl get pod -l app.kubernetes.io/name=keto -o jsonpath="{.items[0].metadata.name}")
-
     - name: Access Pod shell
-      run: kubectl exec --namespace default -ti $POD -- sh
+      run: kubectl exec --namespace default -ti $(kubectl get pod -l app.kubernetes.io/name=keto -o jsonpath="{.items[0].metadata.name}") -- sh
 
     - name: Migrate
       run: keto migrate up -y --all-namespaces --config /etc/config/keto.yaml
