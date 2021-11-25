@@ -35,7 +35,7 @@ jobs:
       run: sudo snap install helm --classic
 
     - name: Start cluster
-      run: minikube start --kubernetes-version=v1.21.5
+      run: minikube start --driver=docker --kubernetes-version=v1.21.5
 
     - name: Install Mojaloop Charts
       run: helm repo add mojaloop-charts http://docs.mojaloop.io/charts/repo
