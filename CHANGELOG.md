@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+### [1.4.2](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.4.1...v1.4.2) (2021-12-02)
+
+
+### Tests
+
+* add test harness and integration tests ([#16](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/16)) ([683739c](https://github.com/mojaloop/reporting-hub-bop-role-ui/commit/683739c9e95204f69780bce32cc0656bdc3d3275))
+
 ### [1.4.1](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.4.0...v1.4.1) (2021-11-12)
 
 
