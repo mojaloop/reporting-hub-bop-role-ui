@@ -20,5 +20,6 @@ npm-debug.log
 .idea
 
 .editor-config
-package-lock.json
 yarn-error.log
+.env
+report.html

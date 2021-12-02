@@ -5,7 +5,12 @@
     "jest": true
   },
   "extends": "eslint:recommended",
+  "globals": {
+    "fixture": "readonly",
+    "test": "readonly"
+  },
   "rules": {
+    "max-len": 100,
     "indent": [
       "error",
       2,

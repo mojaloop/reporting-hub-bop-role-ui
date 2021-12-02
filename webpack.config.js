@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const DotenvPlugin = require('dotenv-webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 require('dotenv').config({
   path: './.env',
@@ -19,6 +20,20 @@ const config = {
 const { ModuleFederationPlugin } = webpack.container;
 
 module.exports = {
+  // Class names are needed for integration testing of the production build
+  // `testcafe-react-selector` needs these classnames to be present
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          keep_classnames: true,
+          keep_fnames: true,
+          sourceMap: true,
+        },
+      }),
+    ],
+  },
   entry: './src/index',
   devtool: 'cheap-module-source-map',
   devServer: {
@@ -51,7 +66,7 @@ module.exports = {
       // For local testing update `target` to point to your
       // locally hosted or port-forwarded `role-assignment-service` service
       '/role-assignment': {
-        target: 'http://localhost:port',
+        target: 'http://localhost:34209',
         pathRewrite: { '^/role-assignment': '' },
         secure: false,
       },
@@ -126,7 +141,7 @@ module.exports = {
     }),
     new EslintWebpackPlugin({
       extensions: ['ts', 'js', 'tsx', 'jsx'],
-      exclude: [`/node_modules/`],
+      exclude: ['node_modules'],
     }),
     new DotenvPlugin({
       systemvars: true,

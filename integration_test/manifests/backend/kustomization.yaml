@@ -1,0 +1,47 @@
+resources:
+- github.com/partiallyordered/mojaloop-kustomize/base/nginx-ingress-controller?ref=ee2ffcc2588dcefda74ed6b4f2e47a7388f67f4e
+- github.com/partiallyordered/mojaloop-kustomize/base/mojaloop/central?ref=3903827ee6b00e8efdca9a39d3fe0774b27e93e3
+- github.com/partiallyordered/voodoo-doll/kubernetes?ref=ad96349ef8fe91a422377be8f53aea56aee60c8e
+- github.com/mojaloop/wso2is-populate/integration_test/manifests/wso2is?ref=v2.0.4
+- github.com/mojaloop/wso2is-populate/integration_test/manifests/wso2is-populate?ref=v2.0.4
+- ing.yaml
+
+configMapGenerator:
+- name: oauth-app-credentials
+  literals: &oauth_creds
+  - AUTH_SERVER_CLIENTKEY=fv0xZxstzo2_qVcqMRFpLI43xm8mZZ
+  - AUTH_SERVER_CLIENTSECRET=CJvf1mQxQdLqWLYuNvAicRd6iBMQo5
+- name: wso2is-populate
+  literals:
+  - WSO2_HOST=https://wso2is:9443
+- name: wso2is-populate-users
+  files:
+  - users.json=./users.json
+
+patches:
+- patch: |-
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: wso2is-populate
+    spec:
+      # Sometimes WSO2 is painfully slow to start.
+      backoffLimit: 100
+      template:
+        spec:
+          containers:
+          - name: job
+            image: ghcr.io/mojaloop/wso2is-populate:v2.0.4
+            envFrom:
+            - configMapRef:
+                name: oauth-app-credentials
+            - configMapRef:
+                name: wso2is-populate
+            volumeMounts:
+            - name: user-config
+              mountPath: /src/imports/users.json
+              subPath: users.json
+          volumes:
+          - name: user-config
+            configMap:
+              name: wso2is-populate-users

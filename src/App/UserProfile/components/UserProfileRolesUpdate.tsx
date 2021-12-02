@@ -55,6 +55,7 @@ function ChangeRolesModal({
 
   return (
     <Modal
+      className="userProfile__role-update-modal"
       title="Select Roles"
       onClose={onClickRoleModalClose}
       onSubmit={() => onClickUpdateRoles(diff)}

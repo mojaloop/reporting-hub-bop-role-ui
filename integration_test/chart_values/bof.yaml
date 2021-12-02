@@ -1,0 +1,76 @@
+## Installation
+# helm upgrade bof ./mojaloop/bof --install
+
+# Default values for bof.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  adminApiSvc:
+    host: "centralledger-service"
+    port: 80
+  keto:
+    readURL: "http://keto-read:80"
+    writeURL: "http://keto-write:80"
+  wso2:
+    identityServer:
+      host: "wso2is"
+      port: 9443
+      userListURL: "https://wso2is:9443/scim2/Users"
+      user: 'admin'
+      secret:
+        name: wso2-is-admin-creds
+        key: password
+  mojalooprole: {}
+
+## Backend API services
+role-assignment-service:
+  enabled: true
+  ingress:
+    enabled: false
+    hostname: api-bof.local
+    path: /proxy/iam(/|$)(.*)
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /$2
+  configFiles:
+    default.json: {
+        "WSO2IS_USER_LIST_URL": "https://wso2is:9443/scim2/Users",
+        "WSO2_USER": "admin",
+        "WSO2_PASSWORD": "admin",
+        "ROLES_LIST": [
+          "USER_ROLE_abc7a2fd-4acf-4547-a194-1673f63eb37c",
+          "ADMIN_ROLE_6c1ec084-86d4-4915-ba81-6c59b87a65a6"
+        ]
+      }
+
+reporting-hub-bop-api-svc:
+  enabled: false
+
+reporting-legacy-api:
+  enabled: false
+
+reporting-hub-bop-shell:
+  enabled: false
+
+security-hub-bop-kratos-ui:
+  enabled: false
+
+### Micro-frontends
+reporting-hub-bop-role-ui:
+  enabled: false
+
+reporting-hub-bop-trx-ui:
+  enabled: false
+
+reporting-hub-bop-positions-ui:
+  enabled: false
+
+reporting-hub-bop-settlements-ui:
+  enabled: false
+
+## Other services
+security-role-perm-operator-svc:
+  enabled: false
+
+reporting-events-processor-svc:
+  enabled: false
