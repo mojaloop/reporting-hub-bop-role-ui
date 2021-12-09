@@ -78,6 +78,9 @@ module.exports = {
     // `import.meta.url`, `document.currentScript`, `<script />`
     // or `self.location`.
     publicPath: 'auto',
+    // Hash files for cache busting
+    filename: '[name].[contenthash].js',
+    assetModuleFilename: "images/[hash][ext][query]",
   },
   resolve: {
     alias: {
