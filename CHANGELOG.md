@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+## [1.5.0](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.4.2...v1.5.0) (2021-12-09)
+
+
+### Features
+
+* add cache busting webpack config ([#18](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/18)) ([9de10da](https://github.com/mojaloop/reporting-hub-bop-role-ui/commit/9de10da7cc32669afea6a078d4a7d77040a3268f))
+
 ### [1.4.2](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.4.1...v1.4.2) (2021-12-02)
 
 
