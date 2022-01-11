@@ -11,6 +11,7 @@ import {
 export const initialState: UserProfileState = {
   userProfile: null,
   userProfileError: null,
+  userProfileRolesError: null,
   isUserProfileRequestPending: true,
   showChangeRolesModal: false,
   showChangeParticipantsModal: false,
@@ -96,6 +97,12 @@ const slice = createSlice({
           ...state.userProfile!,
           assignedRoles: action.payload,
         },
+      };
+    },
+    setUserProfileRolesError(state: UserProfileState, action: PayloadAction<string>) {
+      return {
+        ...state,
+        userProfileRolesError: action.payload,
       };
     },
     requestUserProfileParticipantsUpdate(

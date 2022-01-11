@@ -98,19 +98,22 @@ function* updateUserRoles(action: PayloadAction<RolesDelta>) {
       roleOperations: roleDelta,
     },
   };
+  try {
+    const userResponse = (yield call(api.userRoles.modify, requestBody)) as MakeResponse<null>;
+    if (userResponse.status !== 200) {
+      throw new Error(JSON.stringify(userResponse));
+    }
 
-  const userResponse = (yield call(api.userRoles.modify, requestBody)) as MakeResponse<null>;
-  if (userResponse.status !== 200) {
-    throw new Error(JSON.stringify(userResponse));
+    const assignedRolesResponse = (yield call(api.userRoles.read, {
+      id: action.payload.id,
+    })) as MakeResponse<FetchRolesResponse>;
+    if (assignedRolesResponse.status !== 200) {
+      throw new Error(JSON.stringify(assignedRolesResponse));
+    }
+    yield put(actions.setUserProfileRoles(assignedRolesResponse.data.roles));
+  } catch (e) {
+    yield put(actions.setUserProfileRolesError(e.message));
   }
-
-  const assignedRolesResponse = (yield call(api.userRoles.read, {
-    id: action.payload.id,
-  })) as MakeResponse<FetchRolesResponse>;
-  if (assignedRolesResponse.status !== 200) {
-    throw new Error(JSON.stringify(assignedRolesResponse));
-  }
-  yield put(actions.setUserProfileRoles(assignedRolesResponse.data.roles));
 }
 
 function* updateUserParticipants(action: PayloadAction<ParticipantsDelta>) {

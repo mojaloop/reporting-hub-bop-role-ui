@@ -37,6 +37,7 @@ const participantColumns = [
 function UserProfile({
   userProfile,
   userProfileError,
+  userProfileRolesError,
   isUserProfileRequestPending,
   showChangeRolesModal,
   showParticipantsRolesModal,
@@ -92,6 +93,15 @@ function UserProfile({
       });
     });
 
+    let userProfileRolesErrorContent = null;
+    if (userProfileRolesError) {
+      userProfileRolesErrorContent = (
+        <MessageBox kind="danger">
+          Error updating the user roles: {userProfileRolesError}
+        </MessageBox>
+      );
+    }
+
     content = (
       <div>
         <Heading size="3">{userProfile!.username}</Heading>
@@ -107,6 +117,7 @@ function UserProfile({
           />
           <Table columns={roleColumns} rows={roleRows} flexible />
         </div>
+        {userProfileRolesErrorContent}
         <div className="userProfile__participants">
           <Heading size="4">Participant Companies</Heading>
           <Button

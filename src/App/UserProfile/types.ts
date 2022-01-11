@@ -16,6 +16,7 @@ export interface UserProfile {
 export interface UserProfileState {
   userProfile: UserProfile | null;
   userProfileError: string | null;
+  userProfileRolesError: string | null;
   isUserProfileRequestPending: boolean;
   showChangeRolesModal: boolean;
   showChangeParticipantsModal: boolean;

@@ -8,6 +8,7 @@ import { RolesDelta, ParticipantsDelta, RoleDeletionItem, ParticipantDeletionIte
 const mapStatePropsUserProfile = (state: State) => ({
   userProfile: selectors.getUserProfile(state),
   userProfileError: selectors.getUserProfileError(state),
+  userProfileRolesError: selectors.getUserProfileRolesError(state),
   isUserProfileRequestPending: selectors.getIsUserProfileRequestPending(state),
   showChangeRolesModal: selectors.showChangeRolesModal(state),
   showParticipantsRolesModal: selectors.showParticipantsRolesModal(state),
