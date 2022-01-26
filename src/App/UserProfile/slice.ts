@@ -97,6 +97,7 @@ const slice = createSlice({
           ...state.userProfile!,
           assignedRoles: action.payload,
         },
+        userProfileRolesError: initialState.userProfileRolesError,
       };
     },
     setUserProfileRolesError(state: UserProfileState, action: PayloadAction<string>) {
