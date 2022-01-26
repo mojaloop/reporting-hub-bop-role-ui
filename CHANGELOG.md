@@ -1,4 +1,6 @@
 # Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+### [1.5.3](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.5.2...v1.5.3) (2022-01-26)
+
 ### [1.5.2](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.5.0...v1.5.2) (2022-01-14)
 
 ## [1.5.0](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.4.2...v1.5.0) (2021-12-09)
