@@ -42,7 +42,13 @@ function Users({ users, usersError, isUsersRequestPending, onPageMount }: UsersP
 
   let content = null;
   if (usersError) {
-    content = <MessageBox kind="danger">Error fetching users: {usersError}</MessageBox>;
+    if (usersError.status === 403) {
+      content = (
+        <MessageBox kind="danger">Error fetching users: {usersError.data.error.message}</MessageBox>
+      );
+    } else {
+      content = <MessageBox kind="danger">Error fetching users: {usersError}</MessageBox>;
+    }
   } else if (isUsersRequestPending) {
     content = <Spinner center />;
   } else {
