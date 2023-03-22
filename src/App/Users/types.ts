@@ -18,6 +18,7 @@ export interface UsersState {
 
 export interface FetchUsersResponse {
   users: User[];
+  error?: any;
 }
 
 export interface ExtensionListItem {
