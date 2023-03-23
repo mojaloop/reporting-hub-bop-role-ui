@@ -1,6 +1,6 @@
 ![Build Status](https://github.com/modusintegration/reporting-hub-bop-role-ui/actions/workflows/node.js.yml/badge.svg)
 
-# Reporting Hub BizOps Role Assignment Microfrontend
+# Reporting Hub BizOps Role Assignment Microfrontends
 
 This is a microfrontend built to assign roles and participants to users.
 
