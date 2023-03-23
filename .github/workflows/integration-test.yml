@@ -23,10 +23,6 @@ jobs:
     needs: manifest_check
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
-
     - uses: actions/checkout@v2
 
     - uses: cachix/install-nix-action@v13
@@ -111,3 +107,7 @@ jobs:
       if: ${{ always() }}
       run: |-
         kubectl get secrets -o json | jq -r '.items[] | { name: .metadata.name, data: .data | map_values(@base64d) }'
+
+    - uses: actions/checkout@v3
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
