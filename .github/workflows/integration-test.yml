@@ -23,6 +23,9 @@ jobs:
     needs: manifest_check
     runs-on: ubuntu-latest
     steps:
+    - name: Collect Workflow Telemetry
+      uses: runforesight/workflow-telemetry-action@v1
+
     - uses: actions/checkout@v2
 
     - uses: cachix/install-nix-action@v13
