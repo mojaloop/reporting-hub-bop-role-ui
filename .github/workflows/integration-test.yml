@@ -65,7 +65,7 @@ jobs:
     - name: Wait for deployment readiness
       # Skaffold is supposed to do this, but for whatever reason, does not. At the time of writing,
       # investigating this was not a priority.
-      run: timeout 900 kubectl wait --for=condition=Ready pod --all --timeout=900s
+      run: timeout 1500 kubectl wait --for=condition=Ready pod --all --timeout=900s
 
     - name: Migrate Keto
       run: kubectl exec --namespace default $(kubectl get pod -l app.kubernetes.io/name=keto -o jsonpath="{.items[0].metadata.name}") -- sh -c "keto migrate up -y --all-namespaces --config /etc/config/keto.yaml"
@@ -110,3 +110,8 @@ jobs:
       if: ${{ always() }}
       run: |-
         kubectl get secrets -o json | jq -r '.items[] | { name: .metadata.name, data: .data | map_values(@base64d) }'
+
+    - uses: actions/checkout@v3
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+      timeout-minutes: 2
