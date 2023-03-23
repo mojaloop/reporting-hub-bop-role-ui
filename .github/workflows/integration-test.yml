@@ -23,9 +23,6 @@ jobs:
     needs: manifest_check
     runs-on: ubuntu-latest
     steps:
-    - name: Collect Workflow Telemetry
-      uses: runforesight/workflow-telemetry-action@v1
-
     - uses: actions/checkout@v2
 
     - uses: cachix/install-nix-action@v13
@@ -65,7 +62,7 @@ jobs:
     - name: Wait for deployment readiness
       # Skaffold is supposed to do this, but for whatever reason, does not. At the time of writing,
       # investigating this was not a priority.
-      run: timeout 1500 kubectl wait --for=condition=Ready pod --all --timeout=900s
+      run: timeout 1500 kubectl wait --for=condition=Ready pod --all --timeout=1200s
 
     - name: Migrate Keto
       run: kubectl exec --namespace default $(kubectl get pod -l app.kubernetes.io/name=keto -o jsonpath="{.items[0].metadata.name}") -- sh -c "keto migrate up -y --all-namespaces --config /etc/config/keto.yaml"
