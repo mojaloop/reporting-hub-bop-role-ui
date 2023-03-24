@@ -66,7 +66,7 @@ module.exports = {
       // For local testing update `target` to point to your
       // locally hosted or port-forwarded `role-assignment-service` service
       '/role-assignment': {
-        target: 'http://localhost:34209',
+        target: 'http://localhost:3008',
         pathRewrite: { '^/role-assignment': '' },
         secure: false,
       },
