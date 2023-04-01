@@ -5,7 +5,7 @@
   "main": "index.js",
   "//": "We explicitly configure testcafe to compile our tests with our installed version of typescript. We therefore alias typescript to 'ts4' in order to reduce the chance of accidentally using the wrong module.",
   "dependencies": {
-    "@js-temporal/polyfill": "^0.2.0",
+    "@js-temporal/polyfill": "^0.4.3",
     "@types/uuid": "^8.3.1",
     "@types/ws": "^6.0.4",
     "axios": "^0.21.1",
