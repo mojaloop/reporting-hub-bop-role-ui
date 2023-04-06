@@ -50,7 +50,7 @@ executors:
   default-docker:
     working_directory: /home/circleci/project
     docker:
-      - image: node:12.16.1-alpine
+      - image: node:14.18.1-alpine
 
   default-machine:
     machine:
@@ -248,6 +248,57 @@ jobs:
           webhook: "$SLACK_WEBHOOK_ANNOUNCEMENT_CI_CD"
           failure_message: 'Publishing docker image failed for: \`"${DOCKER_ORG}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}"\`'
 
+  publish-snapshot:
+    executor: default-machine
+    steps:
+      - checkout
+      - run:
+          name: Setup for SNAPSHOT release
+          command: |
+            echo "export RELEASE_TAG=$RELEASE_TAG_SNAPSHOT" >> $BASH_ENV
+            echo "RELEASE_TAG=$RELEASE_TAG_SNAPSHOT"
+            PACKAGE_VERSION=$(cat package-lock.json | jq -r .version)
+            echo "export PACKAGE_VERSION=${PACKAGE_VERSION}" >> $BASH_ENV
+            echo "PACKAGE_VERSION=${PACKAGE_VERSION}"
+      - run:
+          name: Setup Slack config
+          command: |
+            echo "export SLACK_PROJECT_NAME=${CIRCLE_PROJECT_REPONAME}" >> $BASH_ENV
+            echo "export SLACK_RELEASE_TYPE='Docker Release'" >> $BASH_ENV
+            echo "export SLACK_RELEASE_TAG=v${CIRCLE_TAG:1}" >> $BASH_ENV
+            echo "export SLACK_BUILD_ID=${CIRCLE_BUILD_NUM}" >> $BASH_ENV
+            echo "export SLACK_CI_URL=${CIRCLE_BUILD_URL}" >> $BASH_ENV
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: Load the pre-built docker image from workspace
+          command: |
+            docker load -i /tmp/docker-image.tar
+      - run:
+          name: Login to Docker Hub
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run:
+          name: Re-tag pre built image
+          command: |
+            docker tag $DOCKER_ORG/$CIRCLE_PROJECT_REPONAME:$CIRCLE_TAG $DOCKER_ORG/$CIRCLE_PROJECT_REPONAME:$RELEASE_TAG
+      - run:
+          name: Publish Docker image $CIRCLE_TAG & Latest tag to Docker Hub
+          command: |
+            echo "Publishing $DOCKER_ORG/$CIRCLE_PROJECT_REPONAME:$CIRCLE_TAG"
+            docker push $DOCKER_ORG/$CIRCLE_PROJECT_REPONAME:$CIRCLE_TAG
+            echo "Publishing $DOCKER_ORG/$CIRCLE_PROJECT_REPONAME:$RELEASE_TAG"
+            docker push $DOCKER_ORG/$CIRCLE_PROJECT_REPONAME:$RELEASE_TAG
+      - run:
+          name: Set Image Digest
+          command: |
+            IMAGE_DIGEST=$(docker inspect $DOCKER_ORG/$CIRCLE_PROJECT_REPONAME:v${CIRCLE_TAG:1} | jq '.[0].RepoDigests | .[]')
+            echo "IMAGE_DIGEST=${IMAGE_DIGEST}"
+            echo "export IMAGE_DIGEST=${IMAGE_DIGEST}" >> $BASH_ENV
+      - slack/status:
+          fail_only: true
+          webhook: "$SLACK_WEBHOOK_ANNOUNCEMENT_CI_CD"
+          failure_message: 'Publishing docker image failed for: \`"${DOCKER_ORG}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}"\`'
+
   #license-scan:
   #  executor: default-machine
   #  steps:
@@ -332,12 +383,20 @@ workflows:
           filters:
             tags:
               only: /.*/
+            branches:
+              ignore:
+                - /feature*/
+                - /bugfix*/
 
       - setup:
           context: org-global
           filters:
             tags:
               only: /.*/
+            branches:
+              ignore:
+                - /feature*/
+                - /bugfix*/
 
       - test-unit:
           context: org-global
@@ -346,6 +405,10 @@ workflows:
           filters:
             tags:
               only: /.*/
+            branches:
+              ignore:
+                - /feature*/
+                - /bugfix*/
 
       #- audit-licenses:
       #    context: org-global
@@ -366,6 +429,10 @@ workflows:
           filters:
             tags:
               only: /.*/
+            branches:
+              ignore:
+                - /feature*/
+                - /bugfix*/
 
       #- license-scan:
       #    context: org-global
@@ -402,6 +469,7 @@ workflows:
             branches:
               only:
                 - master
+                - /release\/v.*/
 
       - github-release:
           context: org-global
@@ -411,6 +479,7 @@ workflows:
             branches:
               only:
                 - master
+                - /release\/v.*/
 
       # New Tags are built and deployed as docker artifacts
       - publish:
@@ -424,7 +493,23 @@ workflows:
             #- license-scan
           filters:
             tags:
-              only: /.*/
+              only: /v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore:
+                - /.*/
+
+      - publish-snapshot:
+          context: org-global
+          requires:
+            - build-local
+            - test-unit
+            #- audit-licenses
+            - linting-check
+            #- image-scan
+            #- license-scan
+          filters:
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*\-snapshot+((\.[0-9]+)?)/
             branches:
               ignore:
                 - /.*/

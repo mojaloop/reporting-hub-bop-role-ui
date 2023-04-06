@@ -8,10 +8,12 @@ function* fetchUsers() {
   try {
     const response = (yield call(api.users.read)) as MakeResponse<FetchUsersResponse>;
 
-    if (response.status !== 200) {
+    if (response && response.status !== 200) {
+      if (response.data?.error?.message) {
+        throw new Error(JSON.stringify(response.data?.error?.message));
+      }
       throw new Error(JSON.stringify(response));
     }
-
     const res: User[] = response.data.users;
 
     yield put(actions.setUsers(res));

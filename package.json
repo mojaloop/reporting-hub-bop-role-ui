@@ -1,6 +1,6 @@
 {
   "name": "@mojaloop/reporting-hub-bop-role-ui",
-  "version": "1.5.3",
+  "version": "1.5.4-snapshot.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,7 @@
     "lint-staged": "lint-staged",
     "lint-style": "stylelint --syntax=scss 'src/**/*.scss'",
     "release": "standard-version --releaseCommitMessageFormat 'chore(release): {{currentTag}} [skip ci]'",
+    "snapshot": "npx standard-version --no-verify --skip.changelog --prerelease snapshot --releaseCommitMessageFormat 'chore(snapshot): {{currentTag}}'",
     "prepare": "husky install",
     "prettier": "prettier --write 'src/**/*.{ts,tsx,js,scss,css,json}' 'webpack.*.js'",
     "version": "node -pe \"require('./package.json').version\"",
