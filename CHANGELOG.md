@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+### [1.5.4](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.5.3...v1.5.4) (2023-04-06)
+
+
+### Bug Fixes
+
+* **mojaloop/#2652:** update sagas to handle rbac error messages ([#50](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/50)) ([9d22b73](https://github.com/mojaloop/reporting-hub-bop-role-ui/commit/9d22b73ba164bd4441dbdefcfbf3a7aa88ef57e7)), closes [mojaloop/#2652](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/2652) [mojaloop/#2652](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/2652)
+
 ### [1.5.3](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.5.2...v1.5.3) (2022-01-26)
 
 ### [1.5.2](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.5.0...v1.5.2) (2022-01-14)
