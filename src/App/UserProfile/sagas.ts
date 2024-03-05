@@ -58,19 +58,19 @@ function* fetchUserProfile(action: PayloadAction<string>) {
       api.participants.read,
     )) as MakeResponse<FetchParticipantsResponse>;
 
-    if (assignableParticipantsResponse.status !== 200) {
-      throw new Error(JSON.stringify(assignableParticipantsResponse));
+    if (assignableParticipantsResponse.status == 200) {
+      // throw new Error(JSON.stringify(assignableParticipantsResponse));
+      userProfile.assignableParticipants = assignableParticipantsResponse.data.participants;
+  
+      const assignedParticipantsResponse = (yield call(api.userParticipants.read, {
+        id: action.payload,
+      })) as MakeResponse<FetchParticipantsResponse>;
+  
+      if (assignedParticipantsResponse.status !== 200) {
+        throw new Error(JSON.stringify(assignedParticipantsResponse));
+      }
+      userProfile.assignedParticipants = assignedParticipantsResponse.data.participants;
     }
-    userProfile.assignableParticipants = assignableParticipantsResponse.data.participants;
-
-    const assignedParticipantsResponse = (yield call(api.userParticipants.read, {
-      id: action.payload,
-    })) as MakeResponse<FetchParticipantsResponse>;
-
-    if (assignedParticipantsResponse.status !== 200) {
-      throw new Error(JSON.stringify(assignedParticipantsResponse));
-    }
-    userProfile.assignedParticipants = assignedParticipantsResponse.data.participants;
 
     yield put(actions.setUserProfile(userProfile));
   } catch (e) {
