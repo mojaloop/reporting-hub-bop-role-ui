@@ -1,6 +1,6 @@
 {
   "name": "@mojaloop/reporting-hub-bop-role-ui",
-  "version": "1.5.5-snapshot.0",
+  "version": "1.5.5-snapshot.1",
   "description": "",
   "main": "index.js",
   "scripts": {
