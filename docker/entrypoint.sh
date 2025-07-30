@@ -1,4 +1,4 @@
-#!/bin/sh
+#! /bin/sh
 
 # Run the script before starting the server
 sh /usr/share/nginx/html/loadRuntimeConfig.sh
