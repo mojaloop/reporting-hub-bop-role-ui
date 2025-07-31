@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+### [1.5.5](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.5.4...v1.5.5) (2025-07-31)
+
+
+### Bug Fixes
+
+* support read only root filesystem ([#91](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/91)) ([e1a27a8](https://github.com/mojaloop/reporting-hub-bop-role-ui/commit/e1a27a82d5b066c64b39045e369f820bc35abf46))
+
 ### [1.5.4](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.5.3...v1.5.4) (2023-04-06)
 
 
