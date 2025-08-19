@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+### [1.5.9](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.5.8...v1.5.9) (2025-08-19)
+
+
+### Bug Fixes
+
+* ensure proper fallback for missing files in nginx configuration ([#97](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/97)) ([47f7aba](https://github.com/mojaloop/reporting-hub-bop-role-ui/commit/47f7aba934197da5798966190d097eb3ff1a2904))
+
 ### [1.5.8](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.5.7...v1.5.8) (2025-08-19)
 
 
