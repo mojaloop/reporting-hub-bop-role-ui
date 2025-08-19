@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+### [1.5.6](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.5.5...v1.5.6) (2025-08-19)
+
+
+### Bug Fixes
+
+* add ui path that can be checked by RBAC ([#94](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/94)) ([4d58b83](https://github.com/mojaloop/reporting-hub-bop-role-ui/commit/4d58b83c4f66c4bdee900a703538e96559cf09c2))
+
 ### [1.5.5](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.5.4...v1.5.5) (2025-07-31)
 
 
