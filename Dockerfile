@@ -29,7 +29,7 @@ ENV REACT_APP_COMMIT=$REACT_APP_COMMIT
 RUN yarn build
 
 # Second part, create a config at boostrap via entrypoint and and serve it
-FROM nginx:1.16.0-alpine
+FROM nginx:1.29.0-alpine
 
 # Create user with uid 1001. Mojaloop helm templates default to uid 1001 for
 # running containers as non-root for better security
