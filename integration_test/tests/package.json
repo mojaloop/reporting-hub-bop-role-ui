@@ -11,7 +11,7 @@
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
     "env-var": "^7.0.1",
-    "mojaloop-voodoo-client": "0.7.0",
+    "mojaloop-voodoo-client": "0.11.1",
     "request": "2.88.2",
     "testcafe": "1.17.0",
     "testcafe-react-selectors": "4.1.1",
