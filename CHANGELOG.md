@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-role-ui](https://github.com/mojaloop/reporting-hub-bop-role-ui)
+### [1.5.10](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.5.9...v1.5.10) (2025-09-11)
+
+
+### Bug Fixes
+
+* update webpack config to support different devtool settings based on mode ([#101](https://github.com/mojaloop/reporting-hub-bop-role-ui/issues/101)) ([e00d0b7](https://github.com/mojaloop/reporting-hub-bop-role-ui/commit/e00d0b7dade61f83f0e00f77d74271ceb19240d2))
+
 ### [1.5.9](https://github.com/mojaloop/reporting-hub-bop-role-ui/compare/v1.5.8...v1.5.9) (2025-08-19)
 
 
