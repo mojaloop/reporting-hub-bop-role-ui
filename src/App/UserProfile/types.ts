@@ -4,57 +4,62 @@ export interface User {
   id: string;
   username: string;
 }
+
+export interface Role {
+  name: string;
+  /** The resource names the role's grants leave open, for an assignment to name. */
+  open: string[];
+}
+
+export interface Resource {
+  resourceName: string;
+  id: string;
+}
+
+/** One role a user holds, and what it is over. */
+export interface Assignment {
+  role: string;
+  resources: Record<string, string>;
+}
+
 export interface UserProfile {
   id: string;
   username: string;
-  assignedRoles: string[];
-  assignableRoles: string[];
-  assignedParticipants: string[];
-  assignableParticipants: string[];
+  assignments: Assignment[];
+  assignableRoles: Role[];
+  /** The resources a role can be given over, keyed by resource name. */
+  resources: Record<string, string[]>;
 }
 
 export interface UserProfileState {
   userProfile: UserProfile | null;
   userProfileError: string | null;
-  userProfileRolesError: string | null;
+  userProfileAssignmentsError: string | null;
   isUserProfileRequestPending: boolean;
-  showChangeRolesModal: boolean;
-  showChangeParticipantsModal: boolean;
+  showAddAssignmentModal: boolean;
 }
 
-export interface RolesDelta {
+export interface AssignmentChange {
   id: string;
-  requestDeletionRows: RoleRow[];
-  requestAssignmentRows: RoleRow[];
-}
-
-export interface ParticipantsDelta {
-  id: string;
-  requestDeletionRows: ParticipantRow[];
-  requestAssignmentRows: ParticipantRow[];
-}
-
-export interface RoleDeletionItem {
-  id: string;
-  roleId: string;
-}
-
-export interface ParticipantDeletionItem {
-  id: string;
-  participantId: string;
+  assignment: Assignment;
 }
 
 export interface FetchRolesResponse {
-  roles: string[];
+  roles: Role[];
 }
 
-export interface FetchParticipantsResponse {
-  participants: string[];
+export interface FetchResourcesResponse {
+  resources: Resource[];
+}
+
+export interface FetchAssignmentsResponse {
+  assignments: Assignment[];
 }
 
 export interface FetchUserByIdResponse {
   user: User;
 }
+
 export interface ExtensionListItem {
   key: string;
   value: string;
@@ -70,10 +75,7 @@ export interface MojaloopErrorInformation {
   extensionList?: ExtensionListItem[];
 }
 
-export interface RoleRow extends Row {
+export interface AssignmentRow extends Row {
   role: string;
-}
-
-export interface ParticipantRow extends Row {
-  participant: string;
+  over: string;
 }

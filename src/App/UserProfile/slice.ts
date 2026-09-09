@@ -1,20 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  UserProfile,
-  UserProfileState,
-  RoleDeletionItem,
-  ParticipantDeletionItem,
-  RolesDelta,
-  ParticipantsDelta,
-} from './types';
+import { Assignment, AssignmentChange, UserProfile, UserProfileState } from './types';
 
 export const initialState: UserProfileState = {
   userProfile: null,
   userProfileError: null,
-  userProfileRolesError: null,
+  userProfileAssignmentsError: null,
   isUserProfileRequestPending: true,
-  showChangeRolesModal: false,
-  showChangeParticipantsModal: false,
+  showAddAssignmentModal: false,
 };
 
 const slice = createSlice({
@@ -44,85 +36,47 @@ const slice = createSlice({
         isUserProfileRequestPending: false,
       };
     },
-    changeUserProfileRolesModalOpen(state: UserProfileState) {
+    addAssignmentModalOpen(state: UserProfileState) {
       return {
         ...state,
-        showChangeRolesModal: true,
+        showAddAssignmentModal: true,
       };
     },
-    changeUserProfileRolesModalClose(state: UserProfileState) {
+    addAssignmentModalClose(state: UserProfileState) {
       return {
         ...state,
-        showChangeRolesModal: false,
-      };
-    },
-    changeUserProfileParticipantsModalOpen(state: UserProfileState) {
-      return {
-        ...state,
-        showChangeParticipantsModal: true,
-      };
-    },
-    changeUserProfileParticipantsModalClose(state: UserProfileState) {
-      return {
-        ...state,
-        showChangeParticipantsModal: false,
+        showAddAssignmentModal: false,
       };
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    requestUserProfileRoleRemove(state: UserProfileState, action: PayloadAction<RoleDeletionItem>) {
+    requestAssignmentAdd(state: UserProfileState, action: PayloadAction<AssignmentChange>) {
       return {
         ...state,
-      };
-    },
-    requestUserProfileParticipantRemove(
-      state: UserProfileState,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      action: PayloadAction<ParticipantDeletionItem>,
-    ) {
-      return {
-        ...state,
+        showAddAssignmentModal: false,
+        userProfileAssignmentsError: initialState.userProfileAssignmentsError,
       };
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    requestUserProfileRolesUpdate(state: UserProfileState, action: PayloadAction<RolesDelta>) {
+    requestAssignmentRemove(state: UserProfileState, action: PayloadAction<AssignmentChange>) {
       return {
         ...state,
-        showChangeRolesModal: false,
+        userProfileAssignmentsError: initialState.userProfileAssignmentsError,
       };
     },
-    setUserProfileRoles(state: UserProfileState, action: PayloadAction<string[]>) {
+    setUserProfileAssignments(state: UserProfileState, action: PayloadAction<Assignment[]>) {
       return {
         ...state,
         userProfile: {
           ...state.userProfile!,
-          assignedRoles: action.payload,
+          assignments: action.payload,
         },
-        userProfileRolesError: initialState.userProfileRolesError,
+        userProfileAssignmentsError: initialState.userProfileAssignmentsError,
       };
     },
-    setUserProfileRolesError(state: UserProfileState, action: PayloadAction<string>) {
+    setUserProfileAssignmentsError(state: UserProfileState, action: PayloadAction<string>) {
       return {
         ...state,
-        userProfileRolesError: action.payload,
-      };
-    },
-    requestUserProfileParticipantsUpdate(
-      state: UserProfileState,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      action: PayloadAction<ParticipantsDelta>,
-    ) {
-      return {
-        ...state,
-        showChangeParticipantsModal: false,
-      };
-    },
-    setUserProfileParticipants(state: UserProfileState, action: PayloadAction<string[]>) {
-      return {
-        ...state,
-        userProfile: {
-          ...state.userProfile!,
-          assignedParticipants: action.payload,
-        },
+        userProfileAssignmentsError: action.payload,
       };
     },
   },

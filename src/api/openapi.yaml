@@ -1,0 +1,36 @@
+openapi: 3.1.0
+info:
+  title: Mojaloop Portal Roles UI
+  version: '1.0'
+  description: >-
+    A micro-frontend served at its own mount, loaded by the portal shell in the
+    browser. Reaching it is one permission; what it then shows is decided by
+    the APIs it calls, each of which authorizes its own requests. Its routes
+    are resolved in the browser and never reach the gateway.
+servers:
+  - url: /
+x-authz:
+  service: portalRoles
+paths:
+  /:
+    get:
+      operationId: viewRoles
+      summary: Opens the role administration view
+      x-authz:
+        scopedBy: []
+      security:
+      - session: []
+      responses:
+        '200':
+          description: The application
+          content:
+            text/html:
+              schema:
+                type: string
+components:
+  securitySchemes:
+    session:
+      type: apiKey
+      in: cookie
+      name: ory_kratos_session
+      description: A human's browser session

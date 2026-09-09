@@ -37,40 +37,36 @@ module.exports = (env, argv) => ({
   entry: './src/index',
   devtool: argv.mode === 'production' ? 'source-map' : 'eval-cheap-module-source-map',
   devServer: {
-    disableHostCheck: true,
+    allowedHosts: 'all',
     // Enable gzip compression of generated files.
     compress: false,
-    // Silence WebpackDevServer's own logs since they're generally not useful.
+    // Silence the dev server's own logs since they're generally not useful.
     // It will still show compile warnings and errors with this setting.
-    clientLogLevel: 'none',
-    // By default files from `contentBase` will not trigger a page reload.
-    watchContentBase: true,
-    // Enable hot reloading server. It will provide WDS_SOCKET_PATH endpoint
-    // for the WebpackDevServer client so it can learn when the files were
-    // updated. The WebpackDevServer client is included as an entry point
-    // in the webpack development configuration. Note that only changes
-    // to CSS are currently hot reloaded. JS changes will refresh the browser.
+    client: {
+      logging: 'none',
+    },
+    // Enable hot reloading server. Note that only changes to CSS are currently
+    // hot reloaded. JS changes will refresh the browser.
     hot: true,
-    // Use 'ws' instead of 'sockjs-node' on server since we're using native
-    // websockets in `webpackHotDevClient`.
-    transportMode: 'ws',
-    // Prevent a WS client from getting injected as we're already including
-    // `webpackHotDevClient`.
-    injectClient: false,
     historyApiFallback: true, // React Router
-    contentBase: path.join(__dirname, 'dist'),
+    // Serve, and reload on, anything already built into dist.
+    static: {
+      directory: path.join(__dirname, 'dist'),
+      publicPath: '/',
+      watch: true,
+    },
     port: config.DEV_PORT,
     host: '0.0.0.0',
-    publicPath: '/',
-    proxy: {
-      // For local testing update `target` to point to your
-      // locally hosted or port-forwarded `role-assignment-service` service
-      '/role-assignment': {
+    proxy: [
+      {
+        // For local testing update `target` to point to your
+        // locally hosted or port-forwarded `role-assignment-service` service
+        context: ['/role-assignment'],
         target: 'http://localhost:3008',
         pathRewrite: { '^/role-assignment': '' },
         secure: false,
       },
-    },
+    ],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),

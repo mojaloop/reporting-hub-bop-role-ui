@@ -41,21 +41,16 @@ const roles: EndpointConfig = {
   withCredentials: true,
 };
 
-const participants: EndpointConfig = {
+const resources: EndpointConfig = {
   service: services.rolesApi,
-  url: () => `/participants`,
+  url: (_: State, { resourceName }) =>
+    `/resources?resourceName=${encodeURIComponent(resourceName)}`,
   withCredentials: true,
 };
 
-const userRoles: EndpointConfig = {
+const userAssignments: EndpointConfig = {
   service: services.rolesApi,
-  url: (_: State, { id }) => `/users/${id}/roles`,
-  withCredentials: true,
-};
-
-const userParticipants: EndpointConfig = {
-  service: services.rolesApi,
-  url: (_: State, { id }) => `/users/${id}/participants`,
+  url: (_: State, { id }) => `/users/${id}/assignments`,
   withCredentials: true,
 };
 
@@ -63,7 +58,6 @@ export default buildApi({
   users: builder<{}>(users),
   usersId: builder<{}>(usersId),
   roles: builder<{}>(roles),
-  participants: builder<{}>(participants),
-  userRoles: builder<{}>(userRoles),
-  userParticipants: builder<{}>(userParticipants),
+  resources: builder<{}>(resources),
+  userAssignments: builder<{}>(userAssignments),
 });

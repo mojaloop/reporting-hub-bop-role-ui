@@ -2,16 +2,20 @@ import React from 'react';
 import { MessageBox, Spinner, Heading, Table, Button } from 'components';
 import { useLocation } from 'react-router-dom';
 import './UserProfile.scss';
-import UserProfileRolesUpdate from './components/UserProfileRolesUpdate';
-import UserProfileParticipantsUpdate from './components/UserProfileParticipantsUpdate';
+import AddAssignment from './components/AddAssignment';
 import { userProfileConnector, UserProfileProps } from './connectors';
+import { Assignment } from './types';
 
-const roleColumns = [
+const assignmentColumns = [
   {
-    label: 'Role Name',
+    label: 'Role',
     key: 'role',
   },
   {
+    label: 'Over',
+    key: 'over',
+  },
+  {
     label: '',
     key: 'removeButton',
     sortable: false,
@@ -20,32 +24,23 @@ const roleColumns = [
   },
 ];
 
-const participantColumns = [
-  {
-    label: 'Company Name',
-    key: 'participant',
-  },
-  {
-    label: '',
-    key: 'removeButton',
-    sortable: false,
-    searchable: false,
-    bodyClassName: 'userProfile__removeButton',
-  },
-];
+/** What a role is over, in the operator's words rather than the graph's. */
+const describe = (assignment: Assignment): string => {
+  const named = Object.entries(assignment.resources);
+  return named.length === 0
+    ? 'everything the role covers'
+    : named.map(([resourceName, id]) => `${resourceName}: ${id}`).join(', ');
+};
 
 function UserProfile({
   userProfile,
   userProfileError,
-  userProfileRolesError,
+  userProfileAssignmentsError,
   isUserProfileRequestPending,
-  showChangeRolesModal,
-  showParticipantsRolesModal,
+  showAddAssignmentModal,
   onPageMount,
-  onClickChangeRoleButton,
-  onClickChangeParticipantsButton,
-  onClickRemoveRoleButton,
-  onClickRemoveParticipantButton,
+  onClickAddAssignmentButton,
+  onClickRemoveAssignmentButton,
 }: UserProfileProps) {
   const { pathname } = useLocation();
   const id = pathname.split('/').pop()!;
@@ -60,44 +55,26 @@ function UserProfile({
   } else if (isUserProfileRequestPending) {
     content = <Spinner center />;
   } else {
-    const roleRows: Record<string, unknown>[] = [];
-    const participantRows: Record<string, unknown>[] = [];
-    userProfile!.assignedRoles.forEach((role) => {
-      roleRows.push({
-        role,
-        removeButton: (
-          <Button
-            noFill
-            className="userProfile__button"
-            size="small"
-            kind="primary"
-            label="Remove Role"
-            onClick={() => onClickRemoveRoleButton({ id, roleId: role })}
-          />
-        ),
-      });
-    });
-    userProfile!.assignedParticipants.forEach((participant) => {
-      participantRows.push({
-        participant,
-        removeButton: (
-          <Button
-            noFill
-            className="userProfile__button"
-            size="small"
-            kind="primary"
-            label="Remove Company"
-            onClick={() => onClickRemoveParticipantButton({ id, participantId: participant })}
-          />
-        ),
-      });
-    });
+    const assignmentRows = userProfile!.assignments.map((assignment) => ({
+      role: assignment.role,
+      over: describe(assignment),
+      removeButton: (
+        <Button
+          noFill
+          className="userProfile__button"
+          size="small"
+          kind="primary"
+          label="Remove"
+          onClick={() => onClickRemoveAssignmentButton({ id, assignment })}
+        />
+      ),
+    }));
 
-    let userProfileRolesErrorContent = null;
-    if (userProfileRolesError) {
-      userProfileRolesErrorContent = (
+    let assignmentsErrorContent = null;
+    if (userProfileAssignmentsError) {
+      assignmentsErrorContent = (
         <MessageBox kind="danger">
-          Error updating the user roles: {userProfileRolesError}
+          Error updating what this user holds: {userProfileAssignmentsError}
         </MessageBox>
       );
     }
@@ -112,43 +89,20 @@ function UserProfile({
             className="userProfile__button"
             size="medium"
             kind="primary"
-            label="Update Roles"
-            onClick={onClickChangeRoleButton}
+            label="Add Assignment"
+            onClick={onClickAddAssignmentButton}
           />
-          <Table columns={roleColumns} rows={roleRows} flexible />
+          <Table columns={assignmentColumns} rows={assignmentRows} flexible />
         </div>
-        {userProfileRolesErrorContent}
-        <div className="userProfile__participants">
-          <Heading size="4">Participant Companies</Heading>
-          <Button
-            noFill
-            className="userProfile__button"
-            size="medium"
-            kind="primary"
-            label="Update Companies"
-            onClick={onClickChangeParticipantsButton}
-          />
-          <Table columns={participantColumns} rows={participantRows} flexible />
-        </div>
+        {assignmentsErrorContent}
       </div>
     );
-  }
-
-  let roleModal = null;
-  if (showChangeRolesModal) {
-    roleModal = <UserProfileRolesUpdate />;
-  }
-
-  let participantModal = null;
-  if (showParticipantsRolesModal) {
-    participantModal = <UserProfileParticipantsUpdate />;
   }
 
   return (
     <div>
       {content}
-      {roleModal}
-      {participantModal}
+      {showAddAssignmentModal ? <AddAssignment /> : null}
     </div>
   );
 }

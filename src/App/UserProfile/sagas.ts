@@ -4,29 +4,22 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { MakeResponse } from '@modusbox/redux-utils/lib/api';
 import { actions } from './slice';
 import {
-  FetchUserByIdResponse,
-  UserProfile,
-  RolesDelta,
-  RoleRow,
-  ParticipantsDelta,
-  ParticipantRow,
-  RoleDeletionItem,
-  ParticipantDeletionItem,
+  AssignmentChange,
+  FetchAssignmentsResponse,
+  FetchResourcesResponse,
   FetchRolesResponse,
-  FetchParticipantsResponse,
+  FetchUserByIdResponse,
+  Role,
+  UserProfile,
 } from './types';
 
+/**
+ * Everything the page needs to show what someone holds and to offer a change:
+ * the person, the roles a deployment defined, and the resources each role's
+ * arguments are chosen from.
+ */
 function* fetchUserProfile(action: PayloadAction<string>) {
   try {
-    const userProfile: UserProfile = {
-      id: '',
-      username: '',
-      assignedRoles: [],
-      assignableRoles: [],
-      assignedParticipants: [],
-      assignableParticipants: [],
-    };
-
     const userResponse = (yield call(
       api.usersId.read,
       action.payload,
@@ -34,207 +27,101 @@ function* fetchUserProfile(action: PayloadAction<string>) {
     if (userResponse.status !== 200) {
       throw new Error(JSON.stringify(userResponse));
     }
-    userProfile.id = userResponse.data.user.id;
-    userProfile.username = userResponse.data.user.username;
 
-    const assignableRolesResponse = (yield call(
-      api.roles.read,
-      action.payload,
-    )) as MakeResponse<FetchRolesResponse>;
-    if (assignableRolesResponse.status !== 200) {
-      throw new Error(JSON.stringify(assignableRolesResponse));
+    const rolesResponse = (yield call(api.roles.read)) as MakeResponse<FetchRolesResponse>;
+    if (rolesResponse.status !== 200) {
+      throw new Error(JSON.stringify(rolesResponse));
     }
-    userProfile.assignableRoles = assignableRolesResponse.data.roles;
+    const assignableRoles = rolesResponse.data.roles;
 
-    const assignedRolesResponse = (yield call(api.userRoles.read, {
+    const resourceNames = [...new Set(assignableRoles.flatMap((role: Role) => role.open))];
+    const fetched = (yield all(
+      resourceNames.map((resourceName) => call(api.resources.read, { resourceName })),
+    )) as MakeResponse<FetchResourcesResponse>[];
+    const resources: Record<string, string[]> = {};
+    resourceNames.forEach((resourceName, index) => {
+      const response = fetched[index];
+      if (response.status !== 200) {
+        throw new Error(JSON.stringify(response));
+      }
+      resources[resourceName] = response.data.resources.map((resource) => resource.id);
+    });
+
+    const assignmentsResponse = (yield call(api.userAssignments.read, {
       id: action.payload,
-    })) as MakeResponse<FetchRolesResponse>;
-    if (assignedRolesResponse.status !== 200) {
-      throw new Error(JSON.stringify(assignedRolesResponse));
+    })) as MakeResponse<FetchAssignmentsResponse>;
+    if (assignmentsResponse.status !== 200) {
+      throw new Error(JSON.stringify(assignmentsResponse));
     }
-    userProfile.assignedRoles = assignedRolesResponse.data.roles;
 
-    const assignableParticipantsResponse = (yield call(
-      api.participants.read,
-    )) as MakeResponse<FetchParticipantsResponse>;
-
-    if (assignableParticipantsResponse.status !== 200) {
-      throw new Error(JSON.stringify(assignableParticipantsResponse));
-    }
-    userProfile.assignableParticipants = assignableParticipantsResponse.data.participants;
-
-    const assignedParticipantsResponse = (yield call(api.userParticipants.read, {
-      id: action.payload,
-    })) as MakeResponse<FetchParticipantsResponse>;
-
-    if (assignedParticipantsResponse.status !== 200) {
-      throw new Error(JSON.stringify(assignedParticipantsResponse));
-    }
-    userProfile.assignedParticipants = assignedParticipantsResponse.data.participants;
-
+    const userProfile: UserProfile = {
+      id: userResponse.data.user.id,
+      username: userResponse.data.user.username,
+      assignments: assignmentsResponse.data.assignments,
+      assignableRoles,
+      resources,
+    };
     yield put(actions.setUserProfile(userProfile));
   } catch (e) {
-    yield put(actions.setUserProfileError(e.message));
+    yield put(actions.setUserProfileError((e as Error).message));
   }
 }
 
-function* updateUserRoles(action: PayloadAction<RolesDelta>) {
-  const roleDeletion = action.payload.requestDeletionRows.map((roleRow: RoleRow) => {
-    return {
-      action: 'delete',
-      roleId: roleRow.role,
-    };
-  });
-  const roleAssignment = action.payload.requestAssignmentRows.map((roleRow: RoleRow) => {
-    return {
-      action: 'insert',
-      roleId: roleRow.role,
-    };
-  });
-  const roleDelta = roleAssignment.concat(roleDeletion);
-  const requestBody = {
-    id: action.payload.id,
-    body: {
-      roleOperations: roleDelta,
-    },
-  };
+/**
+ * One membership at a time, because that is what a change is: a role over
+ * named resources, granted or taken back. The IAM refuses what it will not
+ * write, and that refusal is what the page shows.
+ */
+function* changeAssignment(
+  action: PayloadAction<AssignmentChange>,
+  actionName: 'insert' | 'delete',
+) {
+  const { id, assignment } = action.payload;
   try {
-    const userResponse = (yield call(api.userRoles.modify, requestBody)) as MakeResponse<null>;
-    if (userResponse.status !== 200) {
-      throw new Error(JSON.stringify(userResponse));
+    const response = (yield call(api.userAssignments.update, {
+      id,
+      body: {
+        assignmentOperations: [
+          { action: actionName, role: assignment.role, resources: assignment.resources },
+        ],
+      },
+    })) as MakeResponse<{ errors?: string[] }>;
+    if (response.status !== 200) {
+      throw new Error((response.data?.errors ?? [JSON.stringify(response)]).join('; '));
     }
 
-    const assignedRolesResponse = (yield call(api.userRoles.read, {
-      id: action.payload.id,
-    })) as MakeResponse<FetchRolesResponse>;
-    if (assignedRolesResponse.status !== 200) {
-      throw new Error(JSON.stringify(assignedRolesResponse));
+    const assignments = (yield call(api.userAssignments.read, {
+      id,
+    })) as MakeResponse<FetchAssignmentsResponse>;
+    if (assignments.status !== 200) {
+      throw new Error(JSON.stringify(assignments));
     }
-    yield put(actions.setUserProfileRoles(assignedRolesResponse.data.roles));
+    yield put(actions.setUserProfileAssignments(assignments.data.assignments));
   } catch (e) {
-    yield put(actions.setUserProfileRolesError(e.message));
+    yield put(actions.setUserProfileAssignmentsError((e as Error).message));
   }
 }
 
-function* updateUserParticipants(action: PayloadAction<ParticipantsDelta>) {
-  const participantDeletion = action.payload.requestDeletionRows.map(
-    (participantRow: ParticipantRow) => {
-      return {
-        action: 'delete',
-        participantId: participantRow.participant,
-      };
-    },
-  );
-  const participantAssignment = action.payload.requestAssignmentRows.map(
-    (participantRow: ParticipantRow) => {
-      return {
-        action: 'insert',
-        participantId: participantRow.participant,
-      };
-    },
-  );
-  const participantDelta = participantAssignment.concat(participantDeletion);
-  const requestBody = {
-    id: action.payload.id,
-    body: {
-      participantOperations: participantDelta,
-    },
-  };
-
-  const userResponse = (yield call(api.userParticipants.modify, requestBody)) as MakeResponse<null>;
-  if (userResponse.status !== 200) {
-    throw new Error(JSON.stringify(userResponse));
-  }
-
-  const assignedParticipantsResponse = (yield call(api.userParticipants.read, {
-    id: action.payload.id,
-  })) as MakeResponse<FetchParticipantsResponse>;
-  if (assignedParticipantsResponse.status !== 200) {
-    throw new Error(JSON.stringify(assignedParticipantsResponse));
-  }
-  yield put(actions.setUserProfileParticipants(assignedParticipantsResponse.data.participants));
+function* addAssignment(action: PayloadAction<AssignmentChange>) {
+  yield call(changeAssignment, action, 'insert');
 }
 
-function* deleteRole(action: PayloadAction<RoleDeletionItem>) {
-  const requestBody = {
-    id: action.payload.id,
-    body: {
-      roleOperations: [
-        {
-          action: 'delete',
-          roleId: action.payload.roleId,
-        },
-      ],
-    },
-  };
-
-  const userResponse = (yield call(api.userRoles.modify, requestBody)) as MakeResponse<null>;
-  if (userResponse.status !== 200) {
-    throw new Error(JSON.stringify(userResponse));
-  }
-
-  const assignedRolesResponse = (yield call(api.userRoles.read, {
-    id: action.payload.id,
-  })) as MakeResponse<FetchRolesResponse>;
-  if (assignedRolesResponse.status !== 200) {
-    throw new Error(JSON.stringify(assignedRolesResponse));
-  }
-  yield put(actions.setUserProfileRoles(assignedRolesResponse.data.roles));
-}
-
-function* deleteParticipant(action: PayloadAction<ParticipantDeletionItem>) {
-  const requestBody = {
-    id: action.payload.id,
-    body: {
-      participantOperations: [
-        {
-          action: 'delete',
-          participantId: action.payload.participantId,
-        },
-      ],
-    },
-  };
-
-  const userResponse = (yield call(api.userParticipants.modify, requestBody)) as MakeResponse<null>;
-  if (userResponse.status !== 200) {
-    throw new Error(JSON.stringify(userResponse.data));
-  }
-
-  const assignedParticipantsResponse = (yield call(api.userParticipants.read, {
-    id: action.payload.id,
-  })) as MakeResponse<FetchParticipantsResponse>;
-  if (assignedParticipantsResponse.status !== 200) {
-    throw new Error(JSON.stringify(assignedParticipantsResponse));
-  }
-  yield put(actions.setUserProfileParticipants(assignedParticipantsResponse.data.participants));
+function* removeAssignment(action: PayloadAction<AssignmentChange>) {
+  yield call(changeAssignment, action, 'delete');
 }
 
 export function* FetchUserProfileSaga(): Generator {
   yield takeLatest(actions.requestUserProfile.type, fetchUserProfile);
 }
 
-export function* UpdateUserRolesSaga(): Generator {
-  yield takeLatest(actions.requestUserProfileRolesUpdate.type, updateUserRoles);
+export function* AddAssignmentSaga(): Generator {
+  yield takeLatest(actions.requestAssignmentAdd.type, addAssignment);
 }
 
-export function* UpdateUserParticipantsSaga(): Generator {
-  yield takeLatest(actions.requestUserProfileParticipantsUpdate.type, updateUserParticipants);
-}
-
-export function* DeleteUserRoleSaga(): Generator {
-  yield takeLatest(actions.requestUserProfileRoleRemove.type, deleteRole);
-}
-
-export function* DeleteParticipantRoleSaga(): Generator {
-  yield takeLatest(actions.requestUserProfileParticipantRemove.type, deleteParticipant);
+export function* RemoveAssignmentSaga(): Generator {
+  yield takeLatest(actions.requestAssignmentRemove.type, removeAssignment);
 }
 
 export default function* rootSaga(): Generator {
-  yield all([
-    FetchUserProfileSaga(),
-    UpdateUserRolesSaga(),
-    UpdateUserParticipantsSaga(),
-    DeleteUserRoleSaga(),
-    DeleteParticipantRoleSaga(),
-  ]);
+  yield all([FetchUserProfileSaga(), AddAssignmentSaga(), RemoveAssignmentSaga()]);
 }

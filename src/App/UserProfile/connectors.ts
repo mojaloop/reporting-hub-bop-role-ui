@@ -3,44 +3,30 @@ import ReduxContext from 'store/context';
 import { connect, ConnectedProps } from 'react-redux';
 import { actions } from './slice';
 import * as selectors from './selectors';
-import { RolesDelta, ParticipantsDelta, RoleDeletionItem, ParticipantDeletionItem } from './types';
+import { AssignmentChange } from './types';
 
 const mapStatePropsUserProfile = (state: State) => ({
   userProfile: selectors.getUserProfile(state),
   userProfileError: selectors.getUserProfileError(state),
-  userProfileRolesError: selectors.getUserProfileRolesError(state),
+  userProfileAssignmentsError: selectors.getUserProfileAssignmentsError(state),
   isUserProfileRequestPending: selectors.getIsUserProfileRequestPending(state),
-  showChangeRolesModal: selectors.showChangeRolesModal(state),
-  showParticipantsRolesModal: selectors.showParticipantsRolesModal(state),
+  showAddAssignmentModal: selectors.showAddAssignmentModal(state),
 });
 
 const mapDispatchPropsUserProfile = (dispatch: Dispatch) => ({
   onPageMount: (id: string) => dispatch(actions.requestUserProfile(id)),
-  onClickChangeRoleButton: () => dispatch(actions.changeUserProfileRolesModalOpen()),
-  onClickChangeParticipantsButton: () => dispatch(actions.changeUserProfileParticipantsModalOpen()),
-  onClickRemoveRoleButton: (item: RoleDeletionItem) =>
-    dispatch(actions.requestUserProfileRoleRemove(item)),
-  onClickRemoveParticipantButton: (item: ParticipantDeletionItem) =>
-    dispatch(actions.requestUserProfileParticipantRemove(item)),
+  onClickAddAssignmentButton: () => dispatch(actions.addAssignmentModalOpen()),
+  onClickRemoveAssignmentButton: (change: AssignmentChange) =>
+    dispatch(actions.requestAssignmentRemove(change)),
 });
 
-const mapStatePropsUserProfileParticipantsUpdate = (state: State) => ({
+const mapStatePropsAddAssignment = (state: State) => ({
   userProfile: selectors.getUserProfile(state),
 });
 
-const mapDispatchPropsUserProfileParticipantsUpdate = (dispatch: Dispatch) => ({
-  onClickParticipantModalClose: () => dispatch(actions.changeUserProfileParticipantsModalClose()),
-  onClickUpdateParticipants: (diff: ParticipantsDelta) =>
-    dispatch(actions.requestUserProfileParticipantsUpdate(diff)),
-});
-
-const mapStatePropsUserProfileRolesUpdate = (state: State) => ({
-  userProfile: selectors.getUserProfile(state),
-});
-
-const mapDispatchPropsUserProfileRolesUpdate = (dispatch: Dispatch) => ({
-  onClickRoleModalClose: () => dispatch(actions.changeUserProfileRolesModalClose()),
-  onClickUpdateRoles: (diff: RolesDelta) => dispatch(actions.requestUserProfileRolesUpdate(diff)),
+const mapDispatchPropsAddAssignment = (dispatch: Dispatch) => ({
+  onClickModalClose: () => dispatch(actions.addAssignmentModalClose()),
+  onClickAdd: (change: AssignmentChange) => dispatch(actions.requestAssignmentAdd(change)),
 });
 
 export const userProfileConnector = connect(
@@ -52,18 +38,9 @@ export const userProfileConnector = connect(
   },
 );
 
-export const userProfileParticipantsUpdateConnector = connect(
-  mapStatePropsUserProfileParticipantsUpdate,
-  mapDispatchPropsUserProfileParticipantsUpdate,
-  null,
-  {
-    context: ReduxContext,
-  },
-);
-
-export const userProfileRolesUpdateConnector = connect(
-  mapStatePropsUserProfileRolesUpdate,
-  mapDispatchPropsUserProfileRolesUpdate,
+export const addAssignmentConnector = connect(
+  mapStatePropsAddAssignment,
+  mapDispatchPropsAddAssignment,
   null,
   {
     context: ReduxContext,
@@ -71,7 +48,4 @@ export const userProfileRolesUpdateConnector = connect(
 );
 
 export type UserProfileProps = ConnectedProps<typeof userProfileConnector>;
-export type UserProfileParticipantsUpdateProps = ConnectedProps<
-  typeof userProfileParticipantsUpdateConnector
->;
-export type UserProfileRolesUpdateProps = ConnectedProps<typeof userProfileRolesUpdateConnector>;
+export type AddAssignmentProps = ConnectedProps<typeof addAssignmentConnector>;

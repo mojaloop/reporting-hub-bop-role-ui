@@ -50,7 +50,7 @@ executors:
   default-docker:
     working_directory: /home/circleci/project
     docker:
-      - image: node:14.18.1-alpine
+      - image: node:24.19.0-alpine3.24
 
   default-machine:
     machine:

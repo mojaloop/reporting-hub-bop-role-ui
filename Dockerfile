@@ -1,12 +1,9 @@
-FROM node:14.18.1-alpine as builder
-WORKDIR /opt/reporting-hub-bop-role-ui
-ENV PATH /opt/reporting-hub-bop-role-ui/node_modules/.bin:$PATH
+ARG NODE_VERSION=24.19.0-alpine3.24
+ARG NGINX_VERSION=1.31.3-alpine
 
-# Install build dependencies
-RUN apk add --no-cache -t build-dependencies python3 git make gcc g++  libtool autoconf automake \
-    && cd $(npm root -g)/npm \
-    && npm config set unsafe-perm true \
-    && npm install -g node-gyp
+FROM node:${NODE_VERSION} AS builder
+WORKDIR /opt/reporting-hub-bop-role-ui
+ENV PATH=/opt/reporting-hub-bop-role-ui/node_modules/.bin:$PATH
 
 COPY package.json /opt/reporting-hub-bop-role-ui/
 COPY yarn.lock /opt/reporting-hub-bop-role-ui/
@@ -29,7 +26,8 @@ ENV REACT_APP_COMMIT=$REACT_APP_COMMIT
 RUN yarn build
 
 # Second part, create a config at boostrap via entrypoint and and serve it
-FROM nginx:1.16.0-alpine
+ARG NGINX_VERSION
+FROM nginx:${NGINX_VERSION}
 
 # Create user with uid 1001. Mojaloop helm templates default to uid 1001 for
 # running containers as non-root for better security
@@ -42,6 +40,10 @@ WORKDIR /usr/share/nginx/html
 
 # Copy build over from builder
 COPY --from=builder /opt/reporting-hub-bop-role-ui/dist/ /usr/share/nginx/html
+
+# The document the platform composes this service's authorization from, at the
+# path a deployment names it by
+COPY --from=builder /opt/reporting-hub-bop-role-ui/src/api /opt/app/src/api
 
 # Remove nginx config
 RUN rm /etc/nginx/conf.d/default.conf /etc/nginx/nginx.conf
