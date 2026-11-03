@@ -1352,10 +1352,10 @@
   dependencies:
     lodash "^4.17.21"
 
-"@mojaloop/authz-ui@0.3.1":
-  version "0.3.1"
-  resolved "http://172.17.0.1:4873/@mojaloop/authz-ui/-/authz-ui-0.3.1.tgz#fa312392ad0ab1acdc3b3a132a77af9f5c74f375"
-  integrity sha512-14nmJQW27u8egeN/fqdNFJJbyTBR9xgUxgJ/Srb8NQJc6ZDrGzPdeWNNZ88mn4zf+0ESNHrF4F6Vu/Mtv9pOYQ==
+"@mojaloop/authz-ui@0.3.2":
+  version "0.3.2"
+  resolved "http://172.17.0.1:4873/@mojaloop/authz-ui/-/authz-ui-0.3.2.tgz#54b11863b68e977591297daf843a44a444fb6b56"
+  integrity sha512-4uDdDHThwwV+36NoDOZgXJ6xiyxGSnAKsyOYfccfb6f9Mt+iAr6GNp6nJFoJWhfBQHOTJlARQCRs4unBKWYhHQ==
   dependencies:
     "@mojaloop/authz" "^0.17.2"
     openapi-fetch "^0.17.0"
