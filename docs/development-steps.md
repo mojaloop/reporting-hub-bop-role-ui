@@ -7,14 +7,12 @@
 
 Generally, when adding a new feature to the app, the steps to do perform the tasks can be summarized as follow:
 
-1. Understand the requirements and separate responbilities: what needs to go in Redux and what needs to go in React
+1. Understand the requirements, and which of the IAM's operations they need
 2. Try to split the problem in smaller problems. The smaller the problem, the easier to solve. Keep a reasonable size for a problem to be solved
-3. Figure out the Types of the data you'll need. Write types and interfaces in the types.ts
-4. Imagine the Redux structure of the data and create getters and setters for it
-5. If async operations are required, creates the saga in combination with Redux actions
-6. Build the necessary user interface consuming the Redux data structure
-7. Split the user interface into reusable components whenever possible
-8. Write unit tests
+3. Take the data's types from `@mojaloop/authz-ui`, which generates them from the IAM's API document
+4. Show the IAM's screens through its elements (`src/App/elements.tsx`), handing them the options `usePermissions` says the caller holds, and map their navigation events to the app's routes
+5. Build what the elements do not cover, the page around them, from the component library
+6. Write tests against fixed answers of the IAM's public API and the session
 
 At this point you should iterate over the last steps and do the following:
 

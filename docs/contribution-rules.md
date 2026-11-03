@@ -22,21 +22,7 @@ When adding changes to the repo, make sure the following rules are respected:
 
 Code should always be tested; unit tests can save a lot of time debugging and prevent unwanted bugs to appear ahead of time.
 
-The recommended approach is to handle React and Redux tests separately; doing so, we'll be testing different aspects of the app and we'll be able to increase the overall test coverage ratio.
-
-#### Redux
-
-Redux tests are pretty simple to write; being reducers pure functions, we can easily test for the reducers results.
-
-Actions themselves do not need to be tested. Selectors doing computation should be tested to ensure their return value.
-
-#### React
-
-React is tested with the [react-testing-library](#https://testing-library.com/docs/react-testing-library/intro/).
-
-Reusable components should have all the props tested, and the function props mocked with `jest.fn()`.
-
-Views, routes, pages should be tested for assuring the right children components are rendered given the right props.
+The screens are tested with [Vitest](https://vitest.dev) and the [react-testing-library](https://testing-library.com/docs/react-testing-library/intro/), against fixed answers of the IAM's public API and of the person's session. A test mounts the app at the path the shell would, with the permissions the session holds, drives the IAM's elements inside their shadow roots, and checks the route the app takes, what it offers, and what the app sends the IAM.
 
 ### Versioning Strategy
 

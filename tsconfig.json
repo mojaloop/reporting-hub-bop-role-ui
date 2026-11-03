@@ -1,27 +1,23 @@
 {
   "compilerOptions": {
     "noImplicitAny": true,
-    "baseUrl": "src",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
-    "lib": ["es2020", "dom"],
-    "rootDir": "src",
-    "moduleResolution": "node",
+    "lib": ["es2020", "dom", "dom.iterable"],
+    "moduleResolution": "bundler",
     "module": "esnext",
     "target": "esnext",
     "jsx": "react",
+    "paths": {
+      "*": ["./src/*"]
+    },
+    "types": ["webpack-env"],
+    "skipLibCheck": true,
     "sourceMap": true,
     "declaration": false,
-    "allowJs": true,
+    "allowJs": true
   },
-  "exclude": [
-    "integration_test",
-    "tests",
-    "dist",
-    "node_modules",
-    "webpack.config.js",
-    "authz"
-  ]
+  "include": ["src"]
 }

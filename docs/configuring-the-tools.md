@@ -7,7 +7,7 @@ frontend-boilerplate uses a number of tools internally:
 - [ESLint](#eslint)
 - [StyleLint](#stylelint)
 - [LintStaged](#lintstaged)
-- [Jest](#jest)
+- [Vitest](#vitest)
 - [Typescript](#typescript)
 
 ### Babel
@@ -46,11 +46,11 @@ Husky is used to perform tasks on git hooks.
 
 Configuration file is `.husky/`
 
-### Jest
+### Vitest
 
-Jest is used to run your tests.
+Vitest is used to run your tests.
 
-Configuration files are `src/setupTests.ts` and `src/test-utils.tsx`
+Configuration files are `vitest.config.mts` and `src/__tests__/setup.ts`
 
 ### Typescript
 

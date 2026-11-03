@@ -41,10 +41,6 @@ WORKDIR /usr/share/nginx/html
 # Copy build over from builder
 COPY --from=builder /opt/reporting-hub-bop-role-ui/dist/ /usr/share/nginx/html
 
-# The document the platform composes this service's authorization from, at the
-# path a deployment names it by
-COPY --from=builder /opt/reporting-hub-bop-role-ui/src/api /opt/app/src/api
-
 # Remove nginx config
 RUN rm /etc/nginx/conf.d/default.conf /etc/nginx/nginx.conf
 
@@ -70,8 +66,8 @@ RUN chmod +x /usr/share/nginx/html/loadRuntimeConfig.sh
 ARG REACT_APP_API_BASE_URL
 ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL
 
-ARG REACT_APP_MOCK_API
-ENV REACT_APP_MOCK_API=$REACT_APP_MOCK_API
+ARG REACT_APP_IAM_SERVICE
+ENV REACT_APP_IAM_SERVICE=$REACT_APP_IAM_SERVICE
 
 USER appuser
 

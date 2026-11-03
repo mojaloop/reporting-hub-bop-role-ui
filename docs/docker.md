@@ -44,14 +44,12 @@ docker build \
 
 ### Runtime configuration
 
-The application loads the configuration file `config.json` at bootstrap in order to determine what are the api and auth endpoints.
-
-The `config.json` is produced at runtime, it uses environment variables passed to docker.
+The entrypoint writes the container's environment into `runtime-env.js`, which tells the app where the IAM's public API is and the prefix its permission ids carry.
 
 ```bash
 docker run --rm \
   -p 8081:8081 \
-  -e API_BASE_URL="https://your-api-base-url" \
-  -e MOCK_API="true" \
+  -e REACT_APP_API_BASE_URL="https://iam-api.example" \
+  -e REACT_APP_IAM_SERVICE="iam" \
    reporting-hub-bop-role-ui
 ```

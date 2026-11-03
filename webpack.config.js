@@ -5,35 +5,21 @@ const webpack = require('webpack');
 const DotenvPlugin = require('dotenv-webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 
 require('dotenv').config({
   path: './.env',
 });
 
-const { DEV_PORT } = process.env;
+const { DEV_PORT, DEV_IAM_URL } = process.env;
 
 const config = {
   DEV_PORT,
+  DEV_IAM_URL,
 };
 
 const { ModuleFederationPlugin } = webpack.container;
 
 module.exports = (env, argv) => ({
-  // Class names are needed for integration testing of the production build
-  // `testcafe-react-selector` needs these classnames to be present
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          keep_classnames: true,
-          keep_fnames: true,
-          sourceMap: true,
-        },
-      }),
-    ],
-  },
   entry: './src/index',
   devtool: argv.mode === 'production' ? 'source-map' : 'eval-cheap-module-source-map',
   devServer: {
@@ -57,16 +43,16 @@ module.exports = (env, argv) => ({
     },
     port: config.DEV_PORT,
     host: '0.0.0.0',
-    proxy: [
-      {
-        // For local testing update `target` to point to your
-        // locally hosted or port-forwarded `role-assignment-service` service
-        context: ['/role-assignment'],
-        target: 'http://localhost:3008',
-        pathRewrite: { '^/role-assignment': '' },
-        secure: false,
-      },
-    ],
+    proxy: config.DEV_IAM_URL
+      ? [
+          {
+            context: ['/iam-api'],
+            target: config.DEV_IAM_URL,
+            pathRewrite: { '^/iam-api': '' },
+            secure: false,
+          },
+        ]
+      : [],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -77,11 +63,11 @@ module.exports = (env, argv) => ({
     // Hash files for cache busting
     filename: '[name].[contenthash].js',
     assetModuleFilename: "images/[hash][ext][query]",
+    clean: true,
   },
   resolve: {
     alias: {
       react: path.resolve(__dirname, 'node_modules', 'react'),
-      'react-redux': path.resolve(__dirname, 'node_modules', 'react-redux'),
     },
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.css'],
@@ -123,15 +109,6 @@ module.exports = (env, argv) => ({
           'sass-loader',
         ],
       },
-      {
-        test: /\.svg$/,
-        loader: '@svgr/webpack',
-        options: {
-          svgoConfig: {
-            plugins: [{ removeViewBox: false }],
-          },
-        },
-      },
     ],
   },
   plugins: [
@@ -145,11 +122,7 @@ module.exports = (env, argv) => ({
     new DotenvPlugin({
       systemvars: true,
     }),
-    new ForkTsCheckerWebpackPlugin({
-      eslint: {
-        files: './src/**/*.{ts,tsx,js,jsx}',
-      },
-    }),
+    new ForkTsCheckerWebpackPlugin(),
     new ModuleFederationPlugin({
       name: 'reporting_hub_bop_role_ui',
       library: { type: 'var', name: 'reporting_hub_bop_role_ui' },
@@ -158,17 +131,7 @@ module.exports = (env, argv) => ({
         './App': './src/Injector',
         './Menu': './src/Menu',
       },
-      shared: [
-        'react',
-        'react-dom',
-        'react-redux',
-        'react-router-dom',
-        'redux',
-        'redux-saga',
-        'history',
-        '@reduxjs/toolkit',
-        '@modusbox/react-components',
-      ],
+      shared: ['react', 'react-dom', 'react-router-dom', '@modusbox/react-components'],
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',

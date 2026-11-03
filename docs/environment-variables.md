@@ -11,21 +11,18 @@ The application is driven by some environment variables used at build and runtim
 | `REACT_APP_VERSION` | version extracted from package.json` | - |
 | `REACT_APP_COMMIT` | commit extracted from git history | - |
 
-### Used Locally / Static Files CDN
+### Runtime Configuration
 
-| Name | Description | Default | Used Locally | Used In A Deployment
-|---|---|---|---|---|
-| `REACT_APP_API_BASE_URL` | base url / path for api | /api | V | ? |
-| `REACT_APP_MOCK_API` |  enables mock api locally | true | V | ? |
-| `DEV_PORT` | webpack server dev http port | 3001 | V |   |
-
-### Docker Only Environment Variables
+A deployment sets these on the container; the entrypoint writes them into `runtime-env.js`. Locally they come from `.env`.
 
 | Name | Description |
 |---|---|
-| `API_BASE_URL` | base path for api (could be a URL) |
-| `MOCK_API` | enable mocking api |
+| `REACT_APP_API_BASE_URL` | the IAM's public API as the browser reaches it through the gateway (a path or a URL) |
+| `REACT_APP_IAM_SERVICE` | the prefix the deployment gives the IAM; the app asks `/me/permissions` about `<prefix>.<operationId>` |
 
-#### Note About Remote URLs Variables
+### Local Development Only
 
-This project is using the `REMOTE_1_URL` to dinamically load a remote. You can add as many remotes as you want or you can decide to use static know localtions without relying on environment variables for the purpose.
+| Name | Description | Default |
+|---|---|---|
+| `DEV_PORT` | webpack server dev http port | 3012 |
+| `DEV_IAM_URL` | where the dev server proxies `/iam-api` to: a gateway serving the IAM's public API | - |

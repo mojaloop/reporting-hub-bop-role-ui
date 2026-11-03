@@ -1,8 +1,7 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import { store, ReduxContext } from 'store';
 import { Menu } from 'components';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { rolesPath, subjectsPath } from '../App/paths';
 
 interface ExportMenuProps {
   path: string;
@@ -10,26 +9,13 @@ interface ExportMenuProps {
   onChange: (path: string) => void;
 }
 
-interface MenuItemsProps {
-  path: string;
-}
-
-function MenuItems({ path }: MenuItemsProps) {
-  return (
-    <>
-      <Menu.Item path={`${path}`} label="Users" />
-    </>
-  );
-}
-
 // ExportMenu is the exported component to be consumed
 // The shell passes down these props
 export default function ExportMenu({ path, pathname, onChange }: ExportMenuProps) {
   return (
     <Menu path={path} pathname={pathname} onChange={onChange}>
-      <Provider store={store} context={ReduxContext}>
-        <MenuItems path={path} />
-      </Provider>
+      <Menu.Item path={subjectsPath(path)} label="Users and clients" partial />
+      <Menu.Item path={rolesPath(path)} label="Roles" partial />
     </Menu>
   );
 }

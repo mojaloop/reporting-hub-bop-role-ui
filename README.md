@@ -2,9 +2,9 @@
 
 # Reporting Hub BizOps Role Assignment Microfrontend
 
-This is a microfrontend built to assign roles and participants to users.
+This is a microfrontend for administering roles: the people and machine clients that can hold them, what each holds, and the roles themselves.
 
-It's built in React / Redux / Typescript and it includes some other libraries.
+It's built in React and TypeScript as a host of the IAM's custom elements from [`@mojaloop/authz-ui`](https://github.com/mojaloop/ml-iam-services/tree/main/packages/authz-ui): it gives each screen a route, hands the elements the IAM's address, maps their navigation events to its routes, and offers only what `/me/permissions` says the caller may do.
 
 This project follows [JAMStack](https://jamstack.org/) architecture and attempts to follow it's best practices.
 
@@ -80,23 +80,15 @@ For more details read [configuring the tools](./docs/configuring-the-tools.md).
 
 ### Run Services
 
-#### Locally, with Docker
+1.  The app talks to the IAM's public API through a deployment's gateway, and
+    reads what the person holds from the session the portal shell passes it
+    (`authConfig.authTokenEndpoint`).
 
-1.  `reporting-hub-bop-role-ui` uses [role-assignment-service](https://github.com/mojaloop/role-assignment-service)
-    for local development.
-    ```sh
-    git clone git@github.com:mojaloop/role-assignment-service.git
-    cd role-assignment-service
-    docker-compose up
-    ```
-
-2.  localhost:3008 hosts the role-assignment-service
-    localhost:9443 hosts the wso2is server
-    localhost:4466 hosts keto's read port
-    localhost:4467 hosts keto's write port
-    localhost:3001 hosts the central-ledger service
-    The microfrontend points towards the role-assignment-service on
-    localhost:3008 using a variable set in `.env`
+2.  Copy `.env.template` to `.env` and set `DEV_IAM_URL` to that gateway; the
+    dev server proxies `/iam-api` to it, which is where `REACT_APP_API_BASE_URL`
+    points.
 
 3.  Start up the `reporting-hub-bop-role-ui` microfrontend using
     `yarn start`.
+
+The tests run the app against fixed answers of the IAM's public API and the session: `yarn test`.

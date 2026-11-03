@@ -1,19 +1,48 @@
 import React from 'react';
-import './index.scss';
-import { Switch, Route } from 'react-router-dom';
-import Users from './Users';
-import UserProfile from './UserProfile';
-import { useBasePath } from './hooks';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { MessageBox } from 'components';
+import { useIam } from '../iam';
+import { BasePathProvider, useMountPath } from './hooks';
+import { newRolePath, RouteParam, rolesPath, subjectsPath } from './paths';
+import { PermissionsProvider } from './permissions';
+import { NewRolePage, RolePage } from './RolePage';
+import Roles from './Roles';
+import SubjectPage from './SubjectPage';
+import Subjects from './Subjects';
 
+const APP = 'user-iam-app';
+
+/** The role administration screens, at whatever path the app is mounted. */
 function App() {
-  const basePath = useBasePath();
+  const basePath = useMountPath();
+  const { service } = useIam();
+  if (service === '') {
+    return (
+      <div className={APP}>
+        <MessageBox kind="danger">
+          REACT_APP_IAM_SERVICE is not configured: the IAM&apos;s permission prefix is unknown.
+        </MessageBox>
+      </div>
+    );
+  }
   return (
-    <div className="user-iam-app">
-      <Switch>
-        <Route exact path={`${basePath}/`} component={Users} />
-        <Route path={`${basePath}/:id`} component={UserProfile} />
-      </Switch>
-    </div>
+    <BasePathProvider value={basePath}>
+      <PermissionsProvider className={APP}>
+        <Switch>
+          <Route exact path={`${basePath}/`}>
+            <Redirect to={subjectsPath(basePath)} />
+          </Route>
+          <Route exact path={subjectsPath(basePath)} component={Subjects} />
+          <Route
+            path={`${subjectsPath(basePath)}/:${RouteParam.subject}`}
+            component={SubjectPage}
+          />
+          <Route exact path={rolesPath(basePath)} component={Roles} />
+          <Route exact path={newRolePath(basePath)} component={NewRolePage} />
+          <Route path={`${rolesPath(basePath)}/:${RouteParam.role}`} component={RolePage} />
+        </Switch>
+      </PermissionsProvider>
+    </BasePathProvider>
   );
 }
 

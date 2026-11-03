@@ -1,35 +1,11 @@
 ## Structuring the code
 
-- [Features](#features)
-- [Utilities](#utilities)
+- `src/App/App.tsx` is the router of the screens, relative to where the app is mounted.
+- `src/App/Subjects.tsx`, `SubjectPage.tsx`, `Roles.tsx` and `RolePage.tsx` are the screens: one per route, each a page around one of the IAM's elements.
+- `src/App/elements.tsx` registers the IAM's elements and binds a page to one: how it reaches the IAM, and its events.
+- `src/App/permissions.tsx` answers which of the IAM's operations the caller holds, through `/me/permissions`.
+- `src/App/paths.ts` names the routes; `src/App/Page.tsx` is the page frame and the permission gate around an element.
+- `src/iam.tsx` holds where the IAM is and the client the app asks it with; `src/config.ts` reads the runtime configuration.
+- `src/Injector.tsx` and `src/Menu` are what the shell loads; `src/bootstrap.tsx` runs the app on its own.
 
-### Features
-
-Features should be organized in modules.
-
-A module is a folder containing multiple files. Each file has a clear responsibility which should not mixed with others, meaning a clear separation of concerns needs to be applied.
-
-To organize features logically, modules are nested following the Routing structure. That makes it easy to keep the React and the Redux structure compatible with each other.
-
-Example of a module structure:
-
-- `index.ts`      is the index file, re-exporting the whole module
-- `components`    contains the React components used in this module
-- `Router.tsx`    contains the React Router for the Auth module
-- `Auth.scss`     is responsible of styling the HTML
-- `Auth.tsx`      is the React view for the Auth module
-- `connectors.ts` contains the bindings between the actions and selectors to provide the React view with
-- `hocs.tsx`      contains additional higher order components
-- `sagas.ts`      contains, as the name suggests, the redux sagas for async operations
-- `selectors.ts`  contains the redux selectors for the portion of the redux state that belongs to Auth
-- `slice.ts`      contains the actions/reducer of the Auth module
-- `helpers.ts`    exports all the reusable helpers used in and outside the Auth module
-- `types.ts`      exports all the types used in the Auth module
-
-### Utilities
-
-Utilities should go in the `src/utils` folder.
-
-Utilities is reusable code that is basically independent from your business logic.
-
-An api utility, for instance, doesn't depends on how you organize your pages, but it's most likely going to used in your redux sagas.
+The IAM's data lives in its elements, each reading what it shows and changing it; the app keeps no copy of it.

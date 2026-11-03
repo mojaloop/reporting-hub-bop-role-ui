@@ -14,7 +14,8 @@ It is responsible to export the children modules/app which will be loaded at run
 ### Isolation And Defined Boundary
 
 - [Choosing A Unique Name](#choosing-a-unique-name)
-- [Custom Redux Context](#custom-redux-context)
+- [Routing Inside The Shell](#routing-inside-the-shell)
+- [The IAM's Elements](#the-iams-elements)
 - [CSS Namespaceing](#css-namespacing)
 
 #### Choosing a Unique Name
@@ -28,28 +29,17 @@ The suggested practice is use such name as:
 - CSS wrapper name
 
 
-#### Custom Redux Context
+#### Routing Inside The Shell
 
-The Redux store needs to be isolated and non accessible by the host or by the sibling remotes.
+The shell mounts `./App` inside its own router at the remote's path, and `react-router-dom` is shared with it. The app reads that mount path once, where its own routes begin (`src/App/App.tsx`), and its screens build their links from it: `subjects`, `subjects/:subject`, `roles`, `roles/new`, `roles/:role`. `src/bootstrap.tsx` gives the app a `BrowserRouter` only when it runs on its own.
 
-For such reason, the store module (`src/store`) exports a custom React Context that is used in the Redux / React-Router Provider components.
+The shell renders `./Menu` with `path` (the mount), `pathname` and `onChange(path)`.
 
-```tsx
-import configureStore, { ReduxContext } from './store';
-///
-///
-function ExportableApp({ ...propsFromTheHost, }) {
-  return (
-    <Provider store={store} context={ReduxContext}>
-      <App {...propsFromTheHost} />
-    </Provider>
-  );
-}
-```
+#### The IAM's Elements
 
-**Note** While it's not necessary to use Redux in the remote, it's still quite convenient to separate React from the application flow and business logic.
+The screens' content is the IAM's custom elements from `@mojaloop/authz-ui/elements`: `<iam-subjects>`, `<iam-assignment-editor>`, `<iam-roles>` and `<iam-role-editor>`. Each renders in its own shadow root with its own React and stylesheet, so the app's React version and CSS do not reach inside, and their theme comes through `--iam-*` custom properties set on the app's wrapper.
 
-You can choose to adopt a different state manager as long as you keep it isolated and do not allow the children applications to access it.
+`src/App/elements.tsx` registers them and gives each page a ref that hands an element how the app reaches the IAM and listens to its events. The app maps `subject-open` and `role-open` to its routes, `role-saved` and `role-deleted` back to the list or the role, and asks `/me/permissions` again after `role-saved`, `role-deleted` and `assignment-changed`. What an element offers (`read-only`, `allow-create`, `allow-open`, `allow-delete`, `can-assign`, `can-unassign`) follows `/me/permissions` for `<REACT_APP_IAM_SERVICE>.<operationId>`.
 
 #### CSS Namespacing
 
