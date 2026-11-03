@@ -50,6 +50,6 @@ The entrypoint writes the container's environment into `runtime-env.js`, which t
 docker run --rm \
   -p 8081:8081 \
   -e REACT_APP_API_BASE_URL="https://iam-api.example" \
-  -e REACT_APP_IAM_SERVICE="iam" \
+  -e REACT_APP_IAM_PERMISSION_PREFIX="iam" \
    reporting-hub-bop-role-ui
 ```

@@ -26,7 +26,8 @@ function App() {
         )}
         {service === '' && (
           <MessageBox kind="danger">
-            REACT_APP_IAM_SERVICE is not configured: the IAM&apos;s permission prefix is unknown.
+            REACT_APP_IAM_PERMISSION_PREFIX is not configured: the IAM&apos;s permission prefix is
+            unknown.
           </MessageBox>
         )}
       </div>

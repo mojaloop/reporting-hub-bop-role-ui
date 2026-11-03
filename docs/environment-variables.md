@@ -18,7 +18,7 @@ A deployment sets these on the container; the entrypoint writes them into `runti
 | Name | Description |
 |---|---|
 | `REACT_APP_API_BASE_URL` | the IAM's public API as the browser reaches it through the gateway (a path or a URL) |
-| `REACT_APP_IAM_SERVICE` | the prefix the deployment gives the IAM; the app asks `/me/permissions` about `<prefix>.<operationId>` |
+| `REACT_APP_IAM_PERMISSION_PREFIX` | the prefix the deployment gives the IAM's permission ids; the app looks for `<prefix>.<operationId>` in the signed-in session |
 
 ### Local Development Only
 

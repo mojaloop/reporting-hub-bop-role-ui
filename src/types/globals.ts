@@ -5,7 +5,7 @@ declare global {
   interface Window {
     roleEnv?: {
       REACT_APP_API_BASE_URL?: string;
-      REACT_APP_IAM_SERVICE?: string;
+      REACT_APP_IAM_PERMISSION_PREFIX?: string;
     };
   }
 }

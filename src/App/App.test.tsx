@@ -295,6 +295,6 @@ describe('the role administration app', () => {
   it('refuses to guess the permission prefix the deployment did not give', async () => {
     const admin = signedIn(ALL_OPERATIONS, '');
     mount(admin, MOUNT);
-    expect(screen.getByText(/REACT_APP_IAM_SERVICE is not configured/)).not.toBeNull();
+    expect(screen.getByText(/REACT_APP_IAM_PERMISSION_PREFIX is not configured/)).not.toBeNull();
   });
 });

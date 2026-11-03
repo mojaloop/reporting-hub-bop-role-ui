@@ -1,5 +1,5 @@
 // https://medium.com/@hasniarif/how-to-handle-runtime-environment-variables-with-react-ec809cb07831
 window.roleEnv = {
   REACT_APP_API_BASE_URL: '__REACT_APP_API_BASE_URL__',
-  REACT_APP_IAM_SERVICE: '__REACT_APP_IAM_SERVICE__',
+  REACT_APP_IAM_PERMISSION_PREFIX: '__REACT_APP_IAM_PERMISSION_PREFIX__',
 };

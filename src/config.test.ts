@@ -11,7 +11,7 @@ describe('runtimeConfig in production', () => {
     vi.stubEnv('NODE_ENV', 'production');
     window.roleEnv = {
       REACT_APP_API_BASE_URL: 'https://iam-api.example/',
-      REACT_APP_IAM_SERVICE: 'iam',
+      REACT_APP_IAM_PERMISSION_PREFIX: 'iam',
     };
     expect(runtimeConfig()).toEqual({ apiBaseUrl: 'https://iam-api.example', iamService: 'iam' });
   });

@@ -14,7 +14,7 @@ services:
         - mojaloop/reporting-hub-bop-role-ui
     environment:
       - REACT_APP_API_BASE_URL=/iam-api
-      - REACT_APP_IAM_SERVICE=iam
+      - REACT_APP_IAM_PERMISSION_PREFIX=iam
     ports:
       - "8081:8081"
     networks:

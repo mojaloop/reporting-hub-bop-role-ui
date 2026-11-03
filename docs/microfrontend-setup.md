@@ -39,7 +39,7 @@ The shell renders `./Menu` with `path` (the mount), `pathname` and `onChange(pat
 
 The screens' content is the IAM's custom elements from `@mojaloop/authz-ui/elements`: `<iam-subjects>`, `<iam-assignment-editor>`, `<iam-roles>` and `<iam-role-editor>`. Each renders in its own shadow root with its own React and stylesheet, so the app's React version and CSS do not reach inside, and their theme comes through `--iam-*` custom properties set on the app's wrapper.
 
-`src/App/elements.tsx` registers them and gives each page a ref that hands an element how the app reaches the IAM and listens to its events. The app maps `subject-open` and `role-open` to its routes, `role-saved` and `role-deleted` back to the list or the role, and asks `/me/permissions` again after `role-saved`, `role-deleted` and `assignment-changed`. What an element offers (`read-only`, `allow-create`, `allow-open`, `allow-delete`, `can-assign`, `can-unassign`) follows `/me/permissions` for `<REACT_APP_IAM_SERVICE>.<operationId>`.
+`src/App/elements.tsx` registers them and gives each page a ref that hands an element how the app reaches the IAM and listens to its events. The app maps `subject-open` and `role-open` to its routes, `role-saved` and `role-deleted` back to the list or the role, and reads the session again after `role-saved`, `role-deleted` and `assignment-changed`. What an element offers (`read-only`, `allow-create`, `allow-open`, `allow-delete`, `can-assign`, `can-unassign`) follows whether the session holds `<REACT_APP_IAM_PERMISSION_PREFIX>.<operationId>`.
 
 #### CSS Namespacing
 

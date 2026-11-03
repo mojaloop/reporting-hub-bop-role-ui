@@ -11,10 +11,10 @@ export function runtimeConfig(): RuntimeConfig {
       ? window.roleEnv
       : {
           REACT_APP_API_BASE_URL: process.env.REACT_APP_API_BASE_URL,
-          REACT_APP_IAM_SERVICE: process.env.REACT_APP_IAM_SERVICE,
+          REACT_APP_IAM_PERMISSION_PREFIX: process.env.REACT_APP_IAM_PERMISSION_PREFIX,
         };
   return {
     apiBaseUrl: (env?.REACT_APP_API_BASE_URL ?? '').replace(/\/$/, ''),
-    iamService: env?.REACT_APP_IAM_SERVICE ?? '',
+    iamService: env?.REACT_APP_IAM_PERMISSION_PREFIX ?? '',
   };
 }
