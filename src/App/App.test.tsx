@@ -260,10 +260,8 @@ describe('the role administration app', () => {
     await waitFor(() => expect(at.path).toBe(`${MOUNT}/roles/new`));
     const editor = await element(ElementTag.roleEditor);
     fireEvent.change(await editor.findByLabelText('Name'), { target: { value: 'entry-reader' } });
-    fireEvent.change(editor.getByLabelText('Permission'), {
-      target: { value: 'ledger.listEntries' },
-    });
-    fireEvent.click(await enabled(editor.getByRole('button', { name: 'Add grant' })));
+    fireEvent.click(editor.getByRole('combobox', { name: 'Add a permission' }));
+    fireEvent.click(await editor.findByRole('option', { name: /^Lists entries/ }));
     fireEvent.click(await enabled(editor.getByRole('button', { name: 'Create role' })));
 
     await waitFor(() => expect(at.path).toBe(`${MOUNT}/roles/entry-reader`));
