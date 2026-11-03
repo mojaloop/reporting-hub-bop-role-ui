@@ -15,13 +15,20 @@ const APP = 'user-iam-app';
 /** The role administration screens, at whatever path the app is mounted. */
 function App() {
   const basePath = useMountPath();
-  const { service } = useIam();
-  if (service === '') {
+  const { apiBase, service } = useIam();
+  if (apiBase === '' || service === '') {
     return (
       <div className={APP}>
-        <MessageBox kind="danger">
-          REACT_APP_IAM_SERVICE is not configured: the IAM&apos;s permission prefix is unknown.
-        </MessageBox>
+        {apiBase === '' && (
+          <MessageBox kind="danger">
+            REACT_APP_API_BASE_URL is not configured: where the IAM is served is unknown.
+          </MessageBox>
+        )}
+        {service === '' && (
+          <MessageBox kind="danger">
+            REACT_APP_IAM_SERVICE is not configured: the IAM&apos;s permission prefix is unknown.
+          </MessageBox>
+        )}
       </div>
     );
   }

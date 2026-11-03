@@ -6,15 +6,15 @@ export interface RuntimeConfig {
 }
 
 export function runtimeConfig(): RuntimeConfig {
-  const env =
+  const env: Window['roleEnv'] =
     process.env.NODE_ENV === 'production'
       ? window.roleEnv
       : {
-          REACT_APP_API_BASE_URL: process.env.REACT_APP_API_BASE_URL ?? '',
-          REACT_APP_IAM_SERVICE: process.env.REACT_APP_IAM_SERVICE ?? '',
+          REACT_APP_API_BASE_URL: process.env.REACT_APP_API_BASE_URL,
+          REACT_APP_IAM_SERVICE: process.env.REACT_APP_IAM_SERVICE,
         };
   return {
-    apiBaseUrl: env.REACT_APP_API_BASE_URL.replace(/\/$/, ''),
-    iamService: env.REACT_APP_IAM_SERVICE,
+    apiBaseUrl: (env?.REACT_APP_API_BASE_URL ?? '').replace(/\/$/, ''),
+    iamService: env?.REACT_APP_IAM_SERVICE ?? '',
   };
 }
